@@ -21,7 +21,7 @@ class School extends Model
             if (is_null($this->logo)) {
                 return asset("assets/blank-image.svg");
             } else {
-                return asset("storage/{$this->logo}");
+                return asset("storage/schools/{$this->id}/{$this->logo}");
             }
         });
     }

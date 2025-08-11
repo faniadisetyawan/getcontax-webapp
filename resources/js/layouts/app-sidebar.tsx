@@ -2,6 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { Fragment, JSX, useEffect, useState } from "react";
 import { Collapse, Nav } from "react-bootstrap";
 import {
+    PiBowlFoodDuotone,
     PiBriefcaseDuotone,
     PiChartLineUpDuotone,
     PiHandCoinsDuotone,
@@ -44,6 +45,25 @@ const items: NavItem[] = [
         label: 'Sekolah',
         url: '/master/schools',
         icon: <PiBriefcaseDuotone className="nav-icon" />,
+    },
+    {
+        label: 'Features',
+        isHeading: true,
+    },
+    {
+        label: 'Kantin',
+        url: '/canteens',
+        icon: <PiBowlFoodDuotone className="nav-icon" />,
+        children: [
+            {
+                label: 'Inventory',
+                url: '/canteens/inventory',
+            },
+            {
+                label: 'Point of Sales',
+                url: '/canteens/pos',
+            },
+        ],
     },
 ];
 
