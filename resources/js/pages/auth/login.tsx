@@ -8,7 +8,7 @@ import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap"
 import { PiLockKeyDuotone, PiUserDuotone } from "react-icons/pi";
 
 interface PageProps {
-    metatags: MetaOptions;
+    metaOptions: MetaOptions;
     status?: string;
     canResetPassword: boolean;
 }
@@ -19,7 +19,7 @@ type LoginForm = {
     remember: boolean;
 };
 
-export default function Login({ metatags, status, canResetPassword }: PageProps) {
+export default function Login({ metaOptions, status, canResetPassword }: PageProps) {
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
@@ -34,14 +34,14 @@ export default function Login({ metatags, status, canResetPassword }: PageProps)
     };
     return (
         <AuthLayout>
-            <Head title={metatags.title} />
+            <Head title={metaOptions.title} />
 
             <Container className="py-5">
                 <Row className="justify-content-center">
                     <Col md={8} xl={4}>
                         <Card body className="p-3 p-md-5">
                             <div className="text-center">
-                                <AppLogo style={{ width: 150 }} />
+                                <AppLogo style={{ width: '100%' }} />
                             </div>
                             <hr className="my-4" />
 

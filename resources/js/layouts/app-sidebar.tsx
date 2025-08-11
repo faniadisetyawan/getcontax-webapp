@@ -8,7 +8,6 @@ import {
     PiIdentificationBadgeDuotone,
     PiNotebookDuotone,
     PiSpeedometerDuotone,
-    PiTipJarDuotone,
     PiToggleLeftDuotone,
     PiToggleRightDuotone,
     PiXCircleDuotone
@@ -42,91 +41,9 @@ const items: NavItem[] = [
         isHeading: true,
     },
     {
-        label: 'Account Officer (AO)',
-        url: '/master/account-officer',
+        label: 'Sekolah',
+        url: '/master/schools',
         icon: <PiBriefcaseDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Akun (Jurnal)',
-        url: '/master/accounts',
-        icon: <PiNotebookDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Daftar Anggota',
-        url: '/master/members',
-        icon: <PiIdentificationBadgeDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Modules',
-        isHeading: true,
-    },
-    {
-        label: 'Pinjaman',
-        url: '/loans',
-        icon: <PiHandCoinsDuotone className="nav-icon" />,
-        children: [
-            {
-                label: 'Daftar Pinjaman',
-                url: '/loans/listing',
-            },
-            {
-                label: 'Pinjaman Baru',
-                url: '/loans/create',
-            },
-            {
-                label: 'Bayar Angsuran',
-                url: '/loans/payment',
-            },
-        ],
-    },
-    {
-        label: 'Laporan',
-        url: '/reports',
-        icon: <PiChartLineUpDuotone className="nav-icon" />,
-        children: [
-            {
-                label: 'Laporan Simpanan Anggota',
-                url: '/reports/deposits',
-            },
-            {
-                label: 'Laporan Pinjaman Anggota',
-                url: '/reports/loans',
-            },
-            {
-                label: 'Laporan Keuangan',
-                url: '/reports/finance',
-                children: [
-                    {
-                        label: 'Jurnal Umum',
-                        url: '/reports/finance/general-journal',
-                    },
-                    {
-                        label: 'Buku Besar (GL)',
-                        url: '/reports/finance/general-ledger',
-                    },
-                    {
-                        label: 'Neraca Saldo',
-                        url: '/reports/finance/trial-balance',
-                    },
-                    {
-                        label: 'Laporan Laba Rugi',
-                        url: '/reports/finance/income-statement',
-                    },
-                    {
-                        label: 'Laporan Posisi Keuangan',
-                        url: '/reports/finance/balance-sheet',
-                    },
-                    {
-                        label: 'Laporan Arus Kas',
-                        url: '/reports/finance/cash-flow',
-                    },
-                    {
-                        label: 'Rekapitulasi Tagihan',
-                        url: '/reports/finance/debt-bill',
-                    },
-                ],
-            },
-        ],
     },
 ];
 

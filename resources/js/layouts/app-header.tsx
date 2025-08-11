@@ -3,8 +3,8 @@ import { SharedData } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import classNames from "classnames";
 import { Fragment } from "react";
-import { Image, NavDropdown } from "react-bootstrap";
-import { PiDotDuotone, PiToggleRightDuotone } from "react-icons/pi";
+import { Form, Image, NavDropdown } from "react-bootstrap";
+import { PiDotDuotone, PiMagnifyingGlassDuotone, PiToggleRightDuotone } from "react-icons/pi";
 
 interface AppHeaderProps {
     setIsSidebarMobileOpen: (open: boolean) => void;
@@ -28,23 +28,25 @@ export default function AppHeader({ setIsSidebarMobileOpen }: AppHeaderProps) {
                 </div>
 
                 <div className="d-none d-lg-flex align-items-center gap-3">
+                    <div className="app-input-group">
+                        <div className="app-input-group-icon">
+                            <PiMagnifyingGlassDuotone />
+                        </div>
+                        <Form.Control
+                            type="search"
+                            name="q"
+                            placeholder="NISN..."
+                            className="border-0"
+                        />
+                    </div>
                     <Link
-                        href={route('master.members.create')}
+                        href={route('dashboard')}
                         className={classNames('top-link', {
                             'active': url.startsWith('/master/members/create')
                         })}
                     >
                         <PiDotDuotone className="fs-3" />
-                        <span>Anggota Baru</span>
-                    </Link>
-                    <Link
-                        href={route('loans.create')}
-                        className={classNames('top-link', {
-                            'active': url.startsWith('/loans/create')
-                        })}
-                    >
-                        <PiDotDuotone className="fs-3" />
-                        <span>Ajukan Pinjaman</span>
+                        <span>Tambah Siswa</span>
                     </Link>
                 </div>
             </Fragment>
