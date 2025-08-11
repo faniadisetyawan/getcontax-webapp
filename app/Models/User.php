@@ -54,9 +54,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'user_roles');
     }
-    
+
     public function hasRole(string $roleName): bool
     {
         return $this->roles->contains('name', $roleName);
+    }
+
+    public function children(): BelongsToMany
+    {
+        return $this->belongsToMany(Student::class, 'student_guardian')
+            ->withPivot('relationship_type') 
+            ->withTimestamps();
     }
 }
