@@ -63,7 +63,12 @@ class User extends Authenticatable
     public function children(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'student_guardian')
-            ->withPivot('relationship_type') 
+            ->withPivot('relationship_type')
             ->withTimestamps();
+    }
+
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
     }
 }

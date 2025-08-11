@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class School extends Model
 {
@@ -24,5 +25,15 @@ class School extends Model
                 return asset("storage/schools/{$this->id}/{$this->logo}");
             }
         });
+    }
+    
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
     }
 }
