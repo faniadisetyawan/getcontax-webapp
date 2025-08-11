@@ -41,3 +41,17 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface MetaOptions {
+    title: string;
+    description: string;
+}
+
+export interface MetaPagination {
+    current_page: number;
+    from: number;
+    to: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+}

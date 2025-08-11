@@ -1,14 +1,17 @@
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import AppLogo from "@/components/app-logo";
+import AuthLayout from "@/layouts/auth-layout";
+import { MetaOptions } from "@/types";
+import { Head, Link, useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import { FormEventHandler } from "react";
+import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import { PiLockKeyDuotone, PiUserDuotone } from "react-icons/pi";
 
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+interface PageProps {
+    metatags: MetaOptions;
+    status?: string;
+    canResetPassword: boolean;
+}
 
 type LoginForm = {
     email: string;
@@ -16,12 +19,7 @@ type LoginForm = {
     remember: boolean;
 };
 
-interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
-}
-
-export default function Login({ status, canResetPassword }: LoginProps) {
+export default function Login({ metatags, status, canResetPassword }: PageProps) {
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
@@ -34,77 +32,107 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             onFinish: () => reset('password'),
         });
     };
-
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <AuthLayout>
+            <Head title={metatags.title} />
 
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
+            <Container className="py-5">
+                <Row className="justify-content-center">
+                    <Col md={8} xl={4}>
+                        <Card body className="p-3 p-md-5">
+                            <div className="text-center">
+                                <AppLogo style={{ width: 150 }} />
+                            </div>
+                            <hr className="my-4" />
 
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
-                                </TextLink>
+                            <Form onSubmit={submit}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Email :</Form.Label>
+                                    <div className={classNames('app-input-group', { 'is-invalid': !!errors.email })}>
+                                        <div className="app-input-group-icon">
+                                            <PiUserDuotone className="mb-1" />
+                                        </div>
+                                        <Form.Control
+                                            type="email"
+                                            name="email"
+                                            value={data.email}
+                                            onChange={(e) => setData('email', e.target.value)}
+                                            isInvalid={!!errors.email}
+                                            placeholder="Email"
+                                            autoFocus
+                                        />
+                                    </div>
+                                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <div className="mb-2 d-flex align-items-center justify-content-between gap-2">
+                                        <Form.Label className="my-0">Password :</Form.Label>
+                                        {canResetPassword && (
+                                            <Link href={route('password.request')} className="small text-muted" tabIndex={5}>
+                                                Forgot password?
+                                            </Link>
+                                        )}
+                                    </div>
+                                    <div className="app-input-group">
+                                        <div className="app-input-group-icon">
+                                            <PiLockKeyDuotone className="mb-1" />
+                                        </div>
+                                        <Form.Control
+                                            type="password"
+                                            name="password"
+                                            value={data.password}
+                                            onChange={(e) => setData('password', e.target.value)}
+                                            isInvalid={!!errors.password}
+                                            placeholder="Password"
+                                        />
+                                    </div>
+                                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                                </Form.Group>
+
+                                <div>
+                                    <Form.Check
+                                        type="checkbox"
+                                        id="remember"
+                                        name="remember"
+                                        checked={data.remember}
+                                        onChange={() => setData('remember', !data.remember)}
+                                        tabIndex={3}
+                                        label="Remember me"
+                                    />
+                                </div>
+
+                                <div className="mt-4 d-grid">
+                                    <Button type="submit" variant="primary" className="btn-icon-label">
+                                        <span>Log in</span>
+                                        {processing &&
+                                            <div className="spinner-grow spinner-grow-sm text-white" role="status" style={{ borderWidth: '0.1em' }}>
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                        }
+                                    </Button>
+                                </div>
+                            </Form>
+
+                            {route().has('register') && (
+                                <div className="mt-4 text-muted text-start small">
+                                    Don't have an account?{' '}
+                                    <Link href={route('register')} tabIndex={5}>
+                                        Sign up
+                                    </Link>
+                                </div>
                             )}
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
+                        </Card>
 
-                    <div className="flex items-center space-x-3">
-                        <Checkbox
-                            id="remember"
-                            name="remember"
-                            checked={data.remember}
-                            onClick={() => setData('remember', !data.remember)}
-                            tabIndex={3}
-                        />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
-                    </Button>
-                </div>
-
-                <div className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
-                    </TextLink>
-                </div>
-            </form>
-
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+                        {!!status &&
+                            <Alert variant="success" className="mt-4 mb-0 border-0">
+                                <h6 className="fw-bold text-decoration-underline text-success">Success</h6>
+                                <p className="mb-0 small text-success">{status}</p>
+                            </Alert>
+                        }
+                    </Col>
+                </Row>
+            </Container>
         </AuthLayout>
-    );
+    )
 }

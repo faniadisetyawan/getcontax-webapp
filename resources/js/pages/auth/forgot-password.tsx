@@ -1,14 +1,9 @@
 // Components
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { Head, Link, useForm } from "@inertiajs/react";
+import { LoaderCircle } from "lucide-react";
+import { FormEventHandler } from "react";
+import AuthLayout from "@/layouts/auth-layout";
+import { Button, Form } from "react-bootstrap";
 
 export default function ForgotPassword({ status }: { status?: string }) {
     const { data, setData, post, processing, errors } = useForm<Required<{ email: string }>>({
@@ -22,7 +17,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
     };
 
     return (
-        <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
+        <AuthLayout>
             <Head title="Forgot password" />
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
@@ -30,8 +25,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <div className="space-y-6">
                 <form onSubmit={submit}>
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
+                        <Form.Label htmlFor="email">Email address</Form.Label>
+                        <Form.Control
                             id="email"
                             type="email"
                             name="email"
@@ -41,8 +36,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
                         />
-
-                        <InputError message={errors.email} />
+                        <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                     </div>
 
                     <div className="my-6 flex items-center justify-start">
@@ -55,7 +49,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
                     <span>Or, return to</span>
-                    <TextLink href={route('login')}>log in</TextLink>
+                    <Link href={route('login')}>log in</Link>
                 </div>
             </div>
         </AuthLayout>

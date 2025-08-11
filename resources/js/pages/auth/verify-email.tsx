@@ -1,11 +1,9 @@
 // Components
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/auth-layout';
+import { Button } from 'react-bootstrap';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     const { post, processing } = useForm({});
@@ -17,7 +15,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
     };
 
     return (
-        <AuthLayout title="Verify email" description="Please verify your email address by clicking on the link we just emailed to you.">
+        <AuthLayout>
             <Head title="Email verification" />
 
             {status === 'verification-link-sent' && (
@@ -32,9 +30,9 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     Resend verification email
                 </Button>
 
-                <TextLink href={route('logout')} method="post" className="mx-auto block text-sm">
+                <Link href={route('logout')} method="post" className="mx-auto block text-sm">
                     Log out
-                </TextLink>
+                </Link>
             </form>
         </AuthLayout>
     );

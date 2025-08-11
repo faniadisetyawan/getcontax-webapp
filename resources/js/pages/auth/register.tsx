@@ -1,13 +1,8 @@
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { Head, Link, useForm } from "@inertiajs/react";
+import { LoaderCircle } from "lucide-react";
+import { FormEventHandler } from "react";
+import AuthLayout from "@/layouts/auth-layout";
+import { Button, Form } from "react-bootstrap";
 
 type RegisterForm = {
     name: string;
@@ -32,13 +27,13 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
+        <AuthLayout>
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
+                        <Form.Label htmlFor="name">Name</Form.Label>
+                        <Form.Control
                             id="name"
                             type="text"
                             required
@@ -50,12 +45,12 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Full name"
                         />
-                        <InputError message={errors.name} className="mt-2" />
+                        <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
+                        <Form.Label htmlFor="email">Email address</Form.Label>
+                        <Form.Control
                             id="email"
                             type="email"
                             required
@@ -66,12 +61,12 @@ export default function Register() {
                             disabled={processing}
                             placeholder="email@example.com"
                         />
-                        <InputError message={errors.email} />
+                        <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
+                        <Form.Label htmlFor="password">Password</Form.Label>
+                        <Form.Control
                             id="password"
                             type="password"
                             required
@@ -82,12 +77,12 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Password"
                         />
-                        <InputError message={errors.password} />
+                        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
+                        <Form.Label htmlFor="password_confirmation">Confirm password</Form.Label>
+                        <Form.Control
                             id="password_confirmation"
                             type="password"
                             required
@@ -98,7 +93,7 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Confirm password"
                         />
-                        <InputError message={errors.password_confirmation} />
+                        <Form.Control.Feedback type="invalid">{errors.password_confirmation}</Form.Control.Feedback>
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
@@ -109,9 +104,9 @@ export default function Register() {
 
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
+                    <Link href={route('login')} tabIndex={6}>
                         Log in
-                    </TextLink>
+                    </Link>
                 </div>
             </form>
         </AuthLayout>

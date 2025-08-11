@@ -1,12 +1,8 @@
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { Head, useForm } from "@inertiajs/react";
+import { LoaderCircle } from "lucide-react";
+import { FormEventHandler } from "react";
+import AuthLayout from "@/layouts/auth-layout";
+import { Button, Form } from "react-bootstrap";
 
 interface ResetPasswordProps {
     token: string;
@@ -36,14 +32,14 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     };
 
     return (
-        <AuthLayout title="Reset password" description="Please enter your new password below">
+        <AuthLayout>
             <Head title="Reset password" />
 
             <form onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
+                        <Form.Label htmlFor="email">Email</Form.Label>
+                        <Form.Control
                             id="email"
                             type="email"
                             name="email"
@@ -53,12 +49,12 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             readOnly
                             onChange={(e) => setData('email', e.target.value)}
                         />
-                        <InputError message={errors.email} className="mt-2" />
+                        <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
+                        <Form.Label htmlFor="password">Password</Form.Label>
+                        <Form.Control
                             id="password"
                             type="password"
                             name="password"
@@ -69,12 +65,12 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
                         />
-                        <InputError message={errors.password} />
+                        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
+                        <Form.Label htmlFor="password_confirmation">Confirm password</Form.Label>
+                        <Form.Control
                             id="password_confirmation"
                             type="password"
                             name="password_confirmation"
@@ -84,7 +80,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             placeholder="Confirm password"
                         />
-                        <InputError message={errors.password_confirmation} className="mt-2" />
+                        <Form.Control.Feedback type="invalid">{errors.password_confirmation}</Form.Control.Feedback>
                     </div>
 
                     <Button type="submit" className="mt-4 w-full" disabled={processing}>
