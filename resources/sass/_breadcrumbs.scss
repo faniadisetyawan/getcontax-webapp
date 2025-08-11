@@ -1,0 +1,16 @@
+.breadcrumb {
+    font-size: $font-size-sm;
+
+    .breadcrumb-item {
+        @extend .text-decoration-none;
+
+        a {
+            @extend .text-decoration-none;
+            color: var(--bs-gray-700);
+        }
+    }
+
+    .breadcrumb-item.active {
+        color: var(--bs-gray-500);
+    }
+}

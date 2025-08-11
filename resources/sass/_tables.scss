@@ -1,0 +1,35 @@
+.table-theme {
+    @extend .mb-0;
+
+    tr {
+
+        th,
+        td {
+            border-style: dashed;
+        }
+
+        th {
+            font-size: $font-size-sm;
+            color: var(--bs-gray-600);
+            font-weight: $font-weight-normal;
+        }
+    }
+}
+
+.table-theme.table-sm {
+
+    th,
+    td {
+        font-size: $font-size-sm;
+    }
+}
+
+[data-bs-theme="dark"] {
+    .table-theme {
+
+        th,
+        td {
+            background-color: transparent;
+        }
+    }
+}

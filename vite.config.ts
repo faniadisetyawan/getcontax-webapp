@@ -1,0 +1,30 @@
+import react from '@vitejs/plugin-react';
+import laravel from 'laravel-vite-plugin';
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ['resources/sass/app.scss', 'resources/js/app.tsx'],
+            ssr: 'resources/js/ssr.tsx',
+            refresh: true,
+        }),
+        react(),
+    ],
+    esbuild: {
+        jsx: 'automatic',
+    },
+    resolve: {
+        alias: {
+            'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+        },
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import']
+            },
+        }
+    },
+});

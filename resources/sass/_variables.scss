@@ -1,0 +1,90 @@
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$success: #21af48;
+$primary: #060613;
+$secondary: #F1F1F4;
+$info: #7239EA;
+$warning: #F6C000;
+$danger: #F8285A;
+$dark: #0F1014;
+$app-bg-color: #F8F2EC;
+$app-bg-color-dark: $dark;
+$app-page-bg-color: $white;
+$app-page-bg-color-dark: #15171C;
+$app-header-bg-color: transparentize($app-bg-color, .3);
+$app-header-bg-color-dark: transparentize($app-bg-color-dark, .3);
+$app-sidebar-bg-color: $white;
+
+$primary-bg-subtle: tint-color($primary, 90%) !default;
+$secondary-bg-subtle: tint-color($secondary, 90%) !default;
+$success-bg-subtle: tint-color($success, 90%) !default;
+$info-bg-subtle: tint-color($info, 90%) !default;
+$warning-bg-subtle: tint-color($warning, 90%) !default;
+$danger-bg-subtle: tint-color($danger, 90%) !default;
+$light-bg-subtle: mix($gray-100, $white) !default;
+$dark-bg-subtle: $gray-400 !default;
+
+$font-family-base: "Inter", sans-serif;
+
+$spacer: 1rem;
+
+$app-sidebar-width: 300px;
+$app-sidebar-width-sm: 70px;
+$app-header-height: 75px;
+$app-body-height: calc(100vh - #{$app-header-height});
+$app-border-radius: $spacer * 0.25;
+
+// FORMS
+$input-btn-padding-y: $spacer * 0.5;
+$input-btn-padding-x: $spacer * 1;
+$input-border-radius: $spacer * 0.5;
+$input-focus-box-shadow: 0;
+$form-select-focus-box-shadow: 0;
+$form-text-font-size: $spacer * 0.8;
+$input-placeholder-color: var(--bs-gray-500);
+$form-select-color: $input-placeholder-color;
+$form-check-input-bg: $secondary;
+
+$nav-link-padding-x: $spacer * 0.5;
+$dropdown-padding-x: $spacer * 0.5;
+
+$breadcrumb-divider: "\203A";
+$breadcrumb-divider-color: $info;
+
+$table-cell-padding-y: $spacer;
+
+:root {
+    --bs-app-bg-color: #{$app-bg-color};
+    --bs-app-page-bg-color: #{$app-page-bg-color};
+    --bs-app-header-bg-color: #{$app-header-bg-color};
+    --bs-app-brand-color: #{$dark};
+    --bs-app-sidebar-bg-color: #{$app-sidebar-bg-color};
+    --bs-app-sidebar-width: #{$app-sidebar-width};
+    --bs-app-header-height: #{$app-header-height};
+    --bs-app-body-height: #{$app-body-height};
+    --bs-card-bg: #{$white};
+    --bs-input-border-radius: #{$input-border-radius};
+    --bs-dropdown-item-border-radius: #{$app-border-radius};
+}
+
+[data-bs-theme="dark"] {
+    --bs-app-bg-color: #{$app-bg-color-dark};
+    --bs-app-page-bg-color: #{$app-page-bg-color-dark};
+    --bs-app-header-bg-color: #{$app-header-bg-color-dark};
+    --bs-app-brand-color: #{$white};
+    --bs-app-sidebar-bg-color: #{$app-page-bg-color-dark};
+}
+
+[data-sidebar-size="sm"] {
+    --bs-app-sidebar-width: #{$app-sidebar-width-sm};
+}

@@ -1,0 +1,78 @@
+@each $color, $value in $theme-colors {
+    .btn-#{$color}-subtle {
+        @if $color =="secondary" or $color =="light" {
+            color: var(--bs-gray-600);
+        }
+
+        @else {
+            color: var(--bs-#{$color});
+
+            &:hover,
+            &:focus,
+            &:active,
+            &.active {
+                color: $white;
+            }
+        }
+
+        background-color: var(--bs-#{$color}-bg-subtle);
+        border-color: transparent;
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.active {
+            background-color: var(--bs-#{$color});
+            border-color: var(--bs-#{$color});
+        }
+
+        &:focus,
+        &.focus {
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-#{$color}-rgb), 0.4);
+        }
+
+        &.disabled,
+        &:disabled {
+            color: var(--bs-#{$color});
+            background-color: rgba(var(--bs-#{$color}-rgb), 0.1);
+            border-color: transparent;
+        }
+    }
+}
+
+.btn-primary,
+.btn-success {
+    color: $white;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        color: $white;
+    }
+}
+
+.btn-icon {
+    @extend .d-flex;
+    @extend .align-items-center;
+    @extend .justify-content-center;
+    width: 42px;
+    height: 42px;
+
+    &.btn-sm {
+        width: 32px;
+        height: 32px;
+    }
+
+    &.btn-lg {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.btn-icon-label {
+    @extend .d-flex;
+    @extend .align-items-center;
+    @extend .justify-content-center;
+    @extend .gap-2;
+}

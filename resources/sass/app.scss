@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@import 'react-datepicker/dist/react-datepicker.css';
+@import 'bootstrap-icons/font/bootstrap-icons.min.css';
+@import 'bootstrap/scss/functions';
+@import 'variables';
+
+@import 'bootstrap/scss/bootstrap';
+
+html,
+body {
+    background-color: var(--bs-app-bg-color);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.select-none {
+    user-select: none;
+}
+
+.text-muted {
+    color: var(--bs-gray-500) !important;
+}
+
+@import 'reboot';
+@import 'buttons';
+@import 'dropdown';
+@import 'cards';
+@import 'forms';
+@import 'tables';
+@import 'breadcrumbs';
+@import 'list-group';
+@import 'nav';
+@import 'layouts';

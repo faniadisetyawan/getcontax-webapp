@@ -1,0 +1,65 @@
+.app-input-group {
+    @extend .position-relative;
+
+    .app-input-group-icon {
+        @extend .position-absolute;
+        left: $spacer * 0.8;
+        top: 50%;
+        @extend .translate-middle-y;
+        font-size: $font-size-lg;
+        color: $input-placeholder-color;
+    }
+
+    .form-control {
+        padding-left: $spacer * 2.5;
+    }
+}
+
+.form-label {
+    &.required {
+        &::after {
+            content: "*";
+            @extend .position-relative;
+            font-size: inherit;
+            color: var(--bs-danger);
+            @extend .ps-1;
+            font-weight: 600;
+        }
+    }
+}
+
+.form-text {
+    display: block;
+}
+
+.btn-group-theme {
+    @extend .d-flex;
+    @extend .flex-wrap;
+    @extend .gap-2;
+
+    .btn {
+        @extend .rounded-3;
+        @extend .py-3;
+        background-color: $white;
+        border: 1px dashed darken($secondary, 5%);
+        color: $dark;
+    }
+
+    .btn-check {
+
+        &:checked+.btn,
+        &:hover+.btn {
+            @extend .bg-primary-subtle;
+        }
+    }
+}
+
+.app__control {
+    min-height: 40px;
+}
+
+.app__value-container {
+    margin: 0;
+    @extend .d-flex;
+    @extend .align-items-center;
+}

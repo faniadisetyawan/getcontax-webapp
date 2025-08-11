@@ -1,0 +1,18 @@
+.list-group {
+    &.list-group-theme {
+        .list-group-item {
+            border-style: dashed;
+            @extend .py-3;
+            @extend .px-0;
+        }
+    }
+}
+
+.list-group-timeline {
+    .list-item {
+        &::marker {
+            color: var(--bs-primary);
+            @extend .fs-4;
+        }
+    }
+}

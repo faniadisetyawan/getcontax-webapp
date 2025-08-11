@@ -1,0 +1,22 @@
+.card {
+    border-color: $secondary;
+    border-width: 1.3px;
+}
+
+.card-theme {
+    .card-header {
+        @extend .py-3;
+        background-color: var(--bs-body-bg);
+        @extend .border-secondary;
+
+        .card-title {
+            @extend .mb-0;
+        }
+    }
+}
+
+[data-bs-theme="dark"] {
+    .card {
+        border-color: $dark;
+    }
+}

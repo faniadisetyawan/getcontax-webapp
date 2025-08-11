@@ -1,0 +1,24 @@
+.nav-tabs-theme {
+    border-bottom: 0;
+    @extend .gap-3;
+
+    .nav-item {
+        .nav-link {
+            border-width: 0;
+
+            &:hover {
+                border-bottom: thin solid $primary;
+            }
+
+            &.active {
+                border: 0;
+                border-bottom: thin solid $primary;
+                color: var(--bs-primary);
+            }
+
+            &:not(.active) {
+                color: var(--bs-gray-500);
+            }
+        }
+    }
+}
