@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class TopUpHistory extends Model
+class ProductOrder extends Model
 {
     protected $fillable = [
+        'order_code',
         'student_id',
-        'user_id',
-        'amount',
-        'method',
-        'notes',
+        'total_amount',
+        'total_items',
     ];
 
     public function student(): BelongsTo
@@ -20,8 +20,8 @@ class TopUpHistory extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function user(): BelongsTo
+    public function details(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(ProductOrderDetail::class);
     }
 }

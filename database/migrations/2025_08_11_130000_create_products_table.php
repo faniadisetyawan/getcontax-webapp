@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2);
             $table->integer('stock')->default(0);
+            $table->boolean('is_consignment')->default(false);
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });

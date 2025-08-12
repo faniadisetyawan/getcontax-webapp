@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('top_up_histories', function (Blueprint $table) {
+        Schema::create('financial_histories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained()->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('transaction_code')->unique();
+            $table->enum('type', ['credit', 'debit']);
             $table->decimal('amount', 15, 2);
-            $table->string('method')->nullable(); 
-            $table->text('notes')->nullable();
+            $table->text('description');
+            $table->decimal('balance_before', 15, 2);
+            $table->decimal('balance_after', 15, 2);
+            $table->nullableMorphs('sourceable');
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('top_up_histories');
+        Schema::dropIfExists('financial_histories');
     }
 };

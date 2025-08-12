@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CanteenTransactionDetail extends Model
+class ProductOrderDetail extends Model
 {
     protected $fillable = [
-        'canteen_transaction_id',
+        'product_order_id',
         'product_id',
         'quantity',
-        'price_per_item',
+        'price_at_purchase',
     ];
-
-    public function transaction(): BelongsTo
+    
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(CanteenTransaction::class, 'canteen_transaction_id');
+        return $this->belongsTo(ProductOrder::class, 'product_order_id');
     }
 
     public function product(): BelongsTo
