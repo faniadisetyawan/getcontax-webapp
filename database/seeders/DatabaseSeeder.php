@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\School;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,10 @@ class DatabaseSeeder extends Seeder
             'npsn' => '20229150',
             'address' => 'Jl. Raya Sawangan No.91, Mampang, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16433',
             'phone' => '(021) 7765620',
+            'checkin_start_time' => '06:00:00',
+            'checkin_end_time' => '08:00:00',
+            'checkout_start_time' => '15:00:00',
+            'checkout_end_time' => '17:00:00',
         ]);
 
         $roles = [
@@ -91,7 +96,7 @@ class DatabaseSeeder extends Seeder
         // --- User Wali Murid ---
         $waliUser = User::create([
             'school_id' => $school->id,
-            'name' => 'Wali Murid',
+            'name' => 'Angga Ariyanto',
             'email' => 'walimurid@cakrabuana.sch.id',
             'password' => bcrypt('password'),
             'address' => 'Alamat Wali Murid',
@@ -100,5 +105,20 @@ class DatabaseSeeder extends Seeder
 
         $waliRole = Role::where('name', 'wali_murid')->first();
         $waliUser->roles()->attach($waliRole);
+
+        $student1 = Student::create([
+            'school_id' => $school->id,
+            'nisn' => '2526P002',
+            'name' => 'Al Farabi Muhammad Gaffi',
+            'rfid_uid' => 'A1B2C3D4', // Contoh ID RFID
+            'va_number' => '880012345678', // Contoh No VA
+            'gender' => 'Laki-laki',
+            'birth_place' => 'Depok',
+            'birth_date' => '2008-05-10',
+            'entry_year' => '2023',
+        ]);
+
+        // Hubungkan Siswa 1 dengan walinya
+        $student1->guardians()->attach($waliUser->id, ['relationship_type' => 'Ayah']);
     }
 }

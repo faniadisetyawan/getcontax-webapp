@@ -18,6 +18,10 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('phone', 50)->nullable();
             $table->string('logo', 100)->nullable();
+            $table->time('checkin_start_time')->nullable();
+            $table->time('checkin_end_time')->nullable();
+            $table->time('checkout_start_time')->nullable();
+            $table->time('checkout_end_time')->nullable();
             $table->timestamps();
         });
     }

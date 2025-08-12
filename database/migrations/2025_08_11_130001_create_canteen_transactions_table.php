@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('canteen_transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_code')->unique();
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->decimal('total_purchase', 15, 2);
+            $table->integer('total_item_count');
+            $table->enum('status', ['success', 'failed', 'refunded'])->default('success');
             $table->timestamps();
         });
     }

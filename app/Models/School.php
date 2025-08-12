@@ -14,6 +14,10 @@ class School extends Model
         'address',
         'phone',
         'logo',
+        'checkin_start_time',
+        'checkin_end_time',
+        'checkout_start_time',
+        'checkout_end_time',
     ];
 
     public function logoUrl(): Attribute
@@ -26,7 +30,7 @@ class School extends Model
             }
         });
     }
-    
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
