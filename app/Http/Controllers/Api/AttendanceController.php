@@ -29,7 +29,11 @@ class AttendanceController extends Controller
         $checkoutEndTime = Carbon::createFromTimeString($school->checkout_end_time, 'Asia/Jakarta');
 
         if ($now->between($checkinStartTime, $checkinEndTime)) {
-            return $this->processCheckIn($student);
+            return $this->processCheckIn($student, 'Tepat Waktu');
+        }
+
+        if ($now->between($checkinEndTime->copy()->addSecond(), $checkoutStartTime->copy()->subSecond())) {
+            return $this->processCheckIn($student, 'Terlambat');
         }
 
         if ($now->between($checkoutStartTime, $checkoutEndTime)) {
@@ -42,7 +46,7 @@ class AttendanceController extends Controller
         ], 403); // 403 Forbidden
     }
 
-    private function processCheckIn(Student $student)
+    private function processCheckIn(Student $student, string $status)
     {
         $attendance = Attendance::firstOrNew([
             'student_id' => $student->id,
@@ -57,12 +61,17 @@ class AttendanceController extends Controller
         }
 
         $attendance->time_in = now()->toTimeString();
+        $attendance->status = $status;
         $attendance->save();
 
         return response()->json([
             'success' => true,
             'message' => 'Check-in berhasil!',
-            'data' => ['name' => $student->name, 'time_in' => $attendance->time_in]
+            'data' => [
+                'name' => $student->name,
+                'time_in' => $attendance->time_in,
+                'status' => $attendance->status,
+            ]
         ]);
     }
 
