@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::prefix('attendances')->group(function () {
     Route::post('/tap', [AttendanceController::class, 'tap']);
 });
+
+Route::post('/webhooks/bank-transfer-handler', [WebhookController::class, 'handleBankTransfer']);

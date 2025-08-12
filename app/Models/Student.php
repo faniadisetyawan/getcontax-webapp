@@ -38,4 +38,9 @@ class Student extends Model
     {
         return $this->belongsTo(School::class);
     }
+
+    public function financialHistories(): HasMany
+    {
+        return $this->hasMany(FinancialHistory::class);
+    }
 }
