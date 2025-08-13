@@ -48,8 +48,11 @@ class ProductController extends Controller
         return to_route('canteens.inventory.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
-    public function edit(Product $product)
+    public function edit($id)
     {
+        $resource = Product::findOrFail($id);
+        ProductResource::withoutWrapping();
+        $product = new ProductResource($resource);
         return Inertia::render('products/form-builder', [
             'metaOptions' => ['title' => 'Edit Produk: ' . $product->name],
             'old' => $product,

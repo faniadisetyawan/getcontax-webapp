@@ -2,7 +2,7 @@ import UploadImage from "@/components/upload-image";
 import AppLayout from "@/layouts/app-layout";
 import AppPageHeader from "@/layouts/app-page-header";
 import { MetaOptions } from "@/types";
-import { School } from "@/types/school";
+import { Product } from "@/types/products";
 import { Head, router, useForm } from "@inertiajs/react";
 import { FormEvent, ReactNode, useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
@@ -10,43 +10,47 @@ import { PiSpeedometerDuotone } from "react-icons/pi";
 
 interface Props {
     metaOptions: MetaOptions;
-    old: School | null;
+    old: Product | null;
 }
 
 export default function FormBuilder({ metaOptions, old }: Props) {
     const { data, setData, errors, post, processing, clearErrors } = useForm({
-        npsn: '',
-        name: '',
-        address: '',
-        phone: '',
-        logo: null as File | null,
+    name: '',
+    sku: '',
+    barcode: '',
+    price: 0,
+    discount_nominal: 0,
+    stock: 0,
+    is_consignment: false as boolean,
+    is_available: true as boolean,
     });
 
     useEffect(() => {
         if (!!old && old?.id) {
             setData(prev => ({
                 ...prev,
-                npsn: old?.npsn ?? '',
                 name: old?.name ?? '',
-                address: old?.address ?? '',
-                phone: old?.phone ?? '',
+                sku: old?.sku ?? '',
+                barcode: old?.barcode ?? '',
+                price: old?.price ?? 0,
+                discount_nominal: old?.discount_nominal ?? 0,
+                stock: old?.stock ?? 0,
+                is_consignment: old.is_consignment,
+                is_available: old.is_available,
             }));
         }
     }, [old]);
 
-    const handleLogoChange = (file: File | null) => {
-        setData('logo', file);
-    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!old) {
-            post(route('master.schools.store'), {
+            post(route('canteens.inventory.store'), {
                 forceFormData: true,
             });
         } else {
             Object.assign(data, { _method: 'PUT' });
-            post(route('master.schools.update', old?.id), {
+            post(route('canteens.inventory.update', old?.id), {
                 forceFormData: true,
             });
         }
@@ -73,8 +77,8 @@ export default function FormBuilder({ metaOptions, old }: Props) {
                         active: true,
                     },
                     {
-                        title: 'Sekolah',
-                        url: route('master.schools.index'),
+                        title: 'Inventory',
+                        url: route('canteens.inventory.index'),
                     },
                     {
                         title: metaOptions.title,
@@ -86,74 +90,77 @@ export default function FormBuilder({ metaOptions, old }: Props) {
             <Container className="p-0">
                 <Form onSubmit={handleSubmit}>
                     <Row>
-                        <Col md={6}>
-                            <Form.Group className="mb-4">
-                                <Form.Label htmlFor="name" className="required">Nama Sekolah</Form.Label>
-                                <Form.Control
-                                    name="name"
-                                    value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
-                                    isInvalid={!!errors.name}
-                                />
-                                <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Row>
-                                <Col md={6}>
-                                    <Form.Group className="mb-4">
-                                        <Form.Label htmlFor="npsn">NPSN</Form.Label>
-                                        <Form.Control
-                                            name="npsn"
-                                            value={data.npsn}
-                                            onChange={(e) => setData('npsn', e.target.value)}
-                                            isInvalid={!!errors.npsn}
-                                        />
-                                        <Form.Control.Feedback type="invalid">{errors.npsn}</Form.Control.Feedback>
+                        <Col md={8}>
+                            <Card body className="py-3 px-md-4">
+                                {old && ( // Tampilkan hanya jika mode edit
+                                    <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="sku">SKU (Dibuat Otomatis)</Form.Label>
+                                        <Form.Control id="sku" value={old.sku} readOnly />
                                     </Form.Group>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Group className="mb-4">
-                                        <Form.Label htmlFor="phone">Nomor Telp</Form.Label>
-                                        <Form.Control
-                                            name="phone"
-                                            value={data.phone}
-                                            onChange={(e) => setData('phone', e.target.value)}
-                                            isInvalid={!!errors.phone}
-                                        />
-                                        <Form.Control.Feedback type="invalid">{errors.phone}</Form.Control.Feedback>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Form.Group className="mb-4">
-                                <Form.Label htmlFor="address">Alamat Sekolah</Form.Label>
-                                <Form.Control
-                                    name="address"
-                                    value={data.address}
-                                    onChange={(e) => setData('address', e.target.value)}
-                                    isInvalid={!!errors.address}
-                                />
-                                <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
-                            </Form.Group>
+                                )}
+                                <Form.Group className="mb-3">
+                                    <Form.Label htmlFor="name" className="required">Nama Produk</Form.Label>
+                                    <Form.Control id="name" value={data.name} onChange={e => setData('name', e.target.value)} isInvalid={!!errors.name} />
+                                    <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label htmlFor="barcode">Barcode</Form.Label>
+                                    <Form.Control id="barcode" value={data.barcode} onChange={e => setData('barcode', e.target.value)} isInvalid={!!errors.barcode} />
+                                    <Form.Text>Scan atau ketik manual. Kosongkan untuk produk internal.</Form.Text>
+                                    <Form.Control.Feedback type="invalid">{errors.barcode}</Form.Control.Feedback>
+                                </Form.Group>
+                                <Row>
+                                    <Col md={6}>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label htmlFor="price" className="required">Harga</Form.Label>
+                                            <Form.Control id="price" type="number" value={data.price} onChange={e => setData('price', Number(e.target.value))} isInvalid={!!errors.price} />
+                                            <Form.Control.Feedback type="invalid">{errors.price}</Form.Control.Feedback>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label htmlFor="discount_nominal">Diskon (Nominal)</Form.Label>
+                                            <Form.Control id="discount_nominal" type="number" value={data.discount_nominal} onChange={e => setData('discount_nominal', Number(e.target.value))} isInvalid={!!errors.discount_nominal} />
+                                            <Form.Control.Feedback type="invalid">{errors.discount_nominal}</Form.Control.Feedback>
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Form.Group className="mb-3">
+                                    <Form.Label htmlFor="stock" className="required">Stok</Form.Label>
+                                    <Form.Control id="stock" type="number" value={data.stock} onChange={e => setData('stock', Number(e.target.value))} isInvalid={!!errors.stock} />
+                                    <Form.Control.Feedback type="invalid">{errors.stock}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Card>
                         </Col>
-                        <Col md={6}>
-                            <CardSection>
-                                <h5 className="mb-3">Logo</h5>
-                                <div className="text-center">
-                                    <UploadImage
-                                        initialImage={old?.logo_url}
-                                        selectedImage={data.logo}
-                                        onFileChange={handleLogoChange}
+                        <Col md={4}>
+                            <Card body className="py-3 px-md-4">
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Jenis Produk</Form.Label>
+                                    <Form.Check
+                                        type="switch"
+                                        id="is_consignment"
+                                        label="Barang Titipan (Konsinyasi)"
+                                        checked={data.is_consignment}
+                                        onChange={e => setData('is_consignment', e.target.checked)}
                                     />
-                                    {errors.logo && (
-                                        <Form.Text className="text-danger">{errors.logo}</Form.Text>
-                                    )}
-                                    <div className="small text-muted">Only *.png, *.jpg and *.jpeg image files are accepted</div>
-                                </div>
-                            </CardSection>
+                                </Form.Group>
+                                <hr />
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Status Ketersediaan</Form.Label>
+                                    <Form.Check
+                                        type="switch"
+                                        id="is_available"
+                                        label="Tersedia untuk dijual"
+                                        checked={data.is_available}
+                                        onChange={e => setData('is_available', e.target.checked)}
+                                    />
+                                </Form.Group>
+                            </Card>
                         </Col>
                     </Row>
                     <hr className="border-dashed" />
                     <div className="d-flex flex-wrap align-items-center justify-content-end gap-2">
-                        <Button type="button" variant="light" onClick={() => router.visit(route('master.schools.index'))}>Cancel</Button>
+                        <Button type="button" variant="light" onClick={() => router.visit(route('canteens.inventory.index'))}>Cancel</Button>
                         <Button type="submit" variant="primary" className="btn-icon-label" disabled={processing}>
                             <span>{!old ? "Submit Data" : "Update Data"}</span>
                             {processing && <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>}
@@ -165,10 +172,3 @@ export default function FormBuilder({ metaOptions, old }: Props) {
     )
 }
 
-const CardSection = ({ children }: { children: ReactNode }) => {
-    return (
-        <Card body className="py-3 px-md-2">
-            {children}
-        </Card>
-    )
-}

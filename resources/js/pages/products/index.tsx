@@ -5,7 +5,7 @@ import { FlashProps, MetaOptions, MetaPagination } from "@/types"
 import { Head, router, usePage } from "@inertiajs/react";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
-import { Button, Dropdown, Form, Image } from "react-bootstrap";
+import { Badge, Button, Dropdown, Form, Image } from "react-bootstrap";
 import { PiDotsThreeOutlineDuotone, PiMagnifyingGlassDuotone, PiSpeedometerDuotone } from "react-icons/pi";
 import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import DataTable from "@/components/data-table";
@@ -100,23 +100,12 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
             cell: info => <div className="text-start">{info.getValue()}</div>,
             header: () => <div className="text-start">Nama Produk</div>
         }),
-        columnHelper.accessor('barcode', {
-            cell: info => (
-                <Image
-                    src={info.row.original.barcode}
-                    style={{ height: 50 }}
-                    className="object-fit"
-                />
-            ),
-            header: () => <div className="text-start">Barcode</div>,
-            enableSorting: false,
-        }),
         columnHelper.accessor('price', {
-            cell: info => <div className="text-start">{info.getValue()}</div>,
+            cell: info => <div className="text-start">Rp {info.getValue().toLocaleString('id-ID')} </div>,
             header: () => <div className="text-start">Harga</div>
         }),
         columnHelper.accessor('discount_nominal', {
-            cell: info => <div className="text-start">{info.getValue()}</div>,
+            cell: info => <div className="text-start">Rp {info.getValue().toLocaleString('id-ID')} </div>,
             header: () => <div className="text-start">Diskon</div>
         }),
         columnHelper.accessor('stock', {
@@ -124,7 +113,15 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
             header: () => <div className="text-start">Stok</div>
         }),
         columnHelper.accessor('is_consignment', {
-            cell: info => <div className="text-start">{info.getValue()}</div>,
+            cell: info => <Badge bg={info.getValue() ? 'info' : 'secondary'}>
+                    {info.getValue() ? 'Konsinyasi' : 'Milik Sendiri'}
+                </Badge>,
+            header: () => <div className="text-start">Titipan</div>
+        }),
+        columnHelper.accessor('is_available', {
+            cell: info => <Badge bg={info.getValue() ? 'success' : 'danger'}>
+                    {info.getValue() ? 'Tersedia' : 'Tidak Tersedia'}
+                </Badge>,
             header: () => <div className="text-start">Titipan</div>
         }),
     ];

@@ -17,6 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'name' => (string) $this->name,
+            'sku' => (string) $this->sku,
             'barcode' => $this->barcode, // string or null
             'price' => (float) $this->price,
             'discount_nominal' => (float) $this->discount_nominal,
