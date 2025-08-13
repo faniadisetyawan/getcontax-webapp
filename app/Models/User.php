@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -72,5 +74,16 @@ class User extends Authenticatable
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function avatarUrl(): Attribute
+    {
+        return Attribute::get(function () {
+            if (is_null($this->avatar)) {
+                return asset("assets/blank-image.svg");
+            } else {
+                return asset("storage/users/{$this->id}/{$this->avatar}");
+            }
+        });
     }
 }

@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         $school = School::create([
             'name' => 'SMAS CAKRA BUANA',
             'npsn' => '20229150',
@@ -120,5 +119,9 @@ class DatabaseSeeder extends Seeder
 
         // Hubungkan Siswa 1 dengan walinya
         $student1->guardians()->attach($waliUser->id, ['relationship_type' => 'Ayah']);
+
+        $this->call([
+            SettingSeeder::class,
+        ]);
     }
 }

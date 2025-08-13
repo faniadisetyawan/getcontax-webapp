@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,14 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             'user' => $user,
         ]);
+    }
+
+    public function profile()
+    {
+        $resource = User::findOrFail(Auth::id());
+
+        UserResource::withoutWrapping();
+        return new UserResource($resource);
     }
 
     public function logout(Request $request)
