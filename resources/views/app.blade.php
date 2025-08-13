@@ -8,7 +8,7 @@
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @routes
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])

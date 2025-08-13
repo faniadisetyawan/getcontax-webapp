@@ -4,6 +4,7 @@ use App\Http\Controllers\CanteenPOSController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\FinancialManagementController;
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::prefix('canteens')->as('canteens.')->group(function () {
         Route::resource('inventory', ProductController::class);
-        Route::get('/pos', [CanteenPOSController::class, 'index'])->name('pos.index');
-        Route::post('/cart/add-item', [CanteenPOSController::class, 'addItemToCart'])->name('cart.add-item');
+        Route::get('pos', [CanteenPOSController::class, 'index'])->name('pos.index');
+        Route::post('cart/add-item', [CanteenPOSController::class, 'addItemToCart'])->name('cart.add-item');
+        Route::get('label/print', [LabelController::class, 'create'])->name('print.create');
+        Route::post('label/print', [LabelController::class, 'store'])->name('print.store');
     });
 });
 

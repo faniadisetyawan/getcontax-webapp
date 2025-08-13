@@ -63,6 +63,10 @@ const items: NavItem[] = [
                 label: 'Point of Sales',
                 url: '/canteens/pos',
             },
+            {
+                label: 'Print Label Barcode',
+                url: '/canteens/label/print',
+            },
         ],
     },
 ];

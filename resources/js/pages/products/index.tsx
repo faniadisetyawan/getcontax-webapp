@@ -13,6 +13,7 @@ import EmptyData from "@/components/empty-data";
 import AppPagination from "@/components/app-pagination";
 import { toast } from "react-toastify";
 import { Product } from "@/types/products";
+import Barcode from "react-barcode";
 
 interface Props {
     metaOptions: MetaOptions;
@@ -99,6 +100,27 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
         columnHelper.accessor('name', {
             cell: info => <div className="text-start">{info.getValue()}</div>,
             header: () => <div className="text-start">Nama Produk</div>
+        }),
+        columnHelper.accessor('barcode', {
+            header: () => <div className="text-start">Barcode</div>,
+            cell: info => {
+                const product = info.row.original;
+                const barcodeData = product.barcode || product.sku;
+                if (!barcodeData) {
+                    return <span className="text-muted">-</span>;
+                }
+                return (
+                    <Barcode 
+                        value={barcodeData}
+                        height={40}
+                        width={1.5}
+                        displayValue={true}
+                        fontSize={10}
+                        margin={5}
+                    />
+                );
+            },
+            enableSorting: false,
         }),
         columnHelper.accessor('price', {
             cell: info => <div className="text-start">Rp {info.getValue().toLocaleString('id-ID')} </div>,
