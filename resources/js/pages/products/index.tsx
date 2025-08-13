@@ -105,19 +105,47 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
             header: () => <div className="text-start">Barcode</div>,
             cell: info => {
                 const product = info.row.original;
-                const barcodeData = product.barcode || product.sku;
-                if (!barcodeData) {
+
+                const hasBarcode = !!product.barcode; // Cek apakah barcode ada
+                const hasSku = !!product.sku;       // Cek apakah SKU ada
+
+                // Jika keduanya tidak ada, tampilkan strip
+                if (!hasBarcode && !hasSku) {
                     return <span className="text-muted">-</span>;
                 }
+
+                // Jika ada, render satu atau keduanya
                 return (
-                    <Barcode 
-                        value={barcodeData}
-                        height={40}
-                        width={1.5}
-                        displayValue={true}
-                        fontSize={10}
-                        margin={5}
-                    />
+                    // Gunakan div untuk menumpuknya secara vertikal
+                    <div>
+                        {hasBarcode && (
+                            <div className="mb-2">
+                                <small className="text-muted d-block">Barcode Pabrikan</small>
+                                <Barcode 
+                                    value={product.barcode!} // Tanda seru (!) menandakan kita yakin nilainya ada
+                                    height={40}
+                                    width={1.5}
+                                    displayValue={true}
+                                    fontSize={10}
+                                    margin={2}
+                                />
+                            </div>
+                        )}
+
+                        {hasSku && (
+                            <div>
+                                <small className="text-muted d-block">SKU Internal</small>
+                                <Barcode 
+                                    value={product.sku!}
+                                    height={40}
+                                    width={1.5}
+                                    displayValue={true}
+                                    fontSize={10}
+                                    margin={2}
+                                />
+                            </div>
+                        )}
+                    </div>
                 );
             },
             enableSorting: false,
