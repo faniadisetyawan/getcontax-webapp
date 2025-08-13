@@ -20,9 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('financials', FinancialManagementController::class)->names('financials');
     });
     Route::prefix('canteens')->as('canteens.')->group(function () {
-        Route::get('/pos', [CanteenPOSController::class, 'index'])->name('pos.index');
         Route::resource('inventory', ProductController::class);
-        // Route::post('/cart/add', [CanteenPOSController::class, 'addToCart'])->name('cart.add');
+        Route::get('/pos', [CanteenPOSController::class, 'index'])->name('pos.index');
+        Route::post('/cart/add-item', [CanteenPOSController::class, 'addItemToCart'])->name('cart.add-item');
     });
 });
 

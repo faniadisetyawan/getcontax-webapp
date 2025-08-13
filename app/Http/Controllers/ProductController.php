@@ -59,20 +59,24 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, string $id)
     {
+        $product = Product::findOrFail($id);
         $product->update($request->validated());
         return to_route('canteens.inventory.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
-    public function destroy(Product $product)
+    public function destroy(string $id)
     {
+        $product = Product::findOrFail($id);
         // Pengecekan keamanan: Jangan hapus produk jika sudah pernah ada transaksi
         if ($product->orderDetails()->exists()) {
             return back()->with('error', 'Produk tidak bisa dihapus karena memiliki riwayat transaksi.');
         }
 
         $product->delete();
-        return to_route('canteens.inventory.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()
+            ->route('canteens.inventory.index', request()->query())
+            ->with('success', 'Produk berhasil dihapus.');
     }
 }

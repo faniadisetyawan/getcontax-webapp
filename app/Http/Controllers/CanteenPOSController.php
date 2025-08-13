@@ -10,7 +10,6 @@ class CanteenPOSController extends Controller
 {
     public function index()
     {
-        // Ambil semua produk yang tersedia untuk ditampilkan di UI
         $products = Product::where('is_available', true)->get();
 
         return Inertia::render('canteen/pos', [

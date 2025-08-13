@@ -23,4 +23,4 @@ Route::prefix('attendances')->group(function () {
 });
 
 Route::post('/webhooks/bank-transfer-handler', [WebhookController::class, 'handleBankTransfer']);
-Route::post('/canteen/checkout', [CanteenController::class, 'checkout']);
+Route::post('/canteen/checkout', [CanteenController::class, 'checkout'])->name('api.canteen.checkout');
