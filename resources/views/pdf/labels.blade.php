@@ -16,18 +16,19 @@
 
         table {
             border-collapse: collapse;
-            width: 210mm;
-            height: 297mm;
+            width: 100%;
+            table-layout: fixed;
         }
 
         td {
             width: 32mm;
             height: 19mm;
+            border: 1px dashed #ccc;
             text-align: center;
             vertical-align: middle;
             padding: 1mm;
             box-sizing: border-box;
-            border: 1px dashed #ccc;
+            overflow: hidden;
         }
 
         .label-name {
@@ -51,25 +52,30 @@
 <body>
     <table>
         @php
-            $cols = 6; 
+            $cols = 6;
         @endphp
 
-        @for ($i = 0; $i < $quantity; $i++)
-            @if ($i % $cols == 0)
+        @foreach (range(1, $quantity) as $i)
+            @if ($loop->first || ($loop->iteration - 1) % $cols == 0)
                 <tr>
             @endif
 
             <td>
                 <div class="label-name">{{ $product->name }}</div>
                 <img class="barcode"
-                    src="data:image/png;base64,{{ DNS1D::getBarcodePNG($product->sku ?? $product->barcode, 'C128', 1, 20) }}" />
+                    src="data:image/png;base64,{{ DNS1D::getBarcodePNG($product->sku ?? $product->barcode, 'C128', 1, 33) }}" />
                 <div class="label-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
             </td>
 
-            @if (($i + 1) % $cols == 0 || $i + 1 == $quantity)
+            @if ($loop->iteration % $cols == 0 || $loop->last)
+                @if ($loop->last && $loop->iteration % $cols != 0)
+                    @for ($j = 0; $j < $cols - ($loop->iteration % $cols); $j++)
+                        <td></td>
+                    @endfor
+                @endif
                 </tr>
             @endif
-        @endfor
+        @endforeach
     </table>
 </body>
 
