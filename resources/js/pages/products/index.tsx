@@ -163,7 +163,7 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
             header: () => <div className="text-start">Stok</div>
         }),
         columnHelper.accessor('is_consignment', {
-            cell: info => <Badge bg={info.getValue() ? 'info' : 'secondary'}>
+            cell: info => <Badge bg={info.getValue() ? 'info' : 'warning'}>
                     {info.getValue() ? 'Konsinyasi' : 'Milik Sendiri'}
                 </Badge>,
             header: () => <div className="text-start">Titipan</div>
