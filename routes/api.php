@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CanteenController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,4 @@ Route::prefix('attendances')->group(function () {
 });
 
 Route::post('/webhooks/bank-transfer-handler', [WebhookController::class, 'handleBankTransfer']);
+Route::post('/canteen/checkout', [CanteenController::class, 'checkout']);
