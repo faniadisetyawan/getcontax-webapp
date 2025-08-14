@@ -1,16 +1,7 @@
-import { useQueryParams } from "@/hooks/use-query-params";
-import AppLayout, { MySwalTheme } from "@/layouts/app-layout";
-import AppPageHeader from "@/layouts/app-page-header";
-import { FlashProps, MetaOptions, MetaPagination } from "@/types"
-import { Head, router, usePage } from "@inertiajs/react";
-import { debounce } from "lodash";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { Badge, Button, Dropdown, Form, Image, InputGroup, Table } from "react-bootstrap";
-import { PiDotsThreeOutlineDuotone, PiMagnifyingGlassDuotone, PiSpeedometerDuotone } from "react-icons/pi";
-import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import DataTable from "@/components/data-table";
-import EmptyData from "@/components/empty-data";
-import AppPagination from "@/components/app-pagination";
+import AppLayout from "@/layouts/app-layout";
+import { Head, router } from "@inertiajs/react";
+import { FormEvent, useRef, useState } from "react";
+import { Button, Form, InputGroup, Modal, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Product } from "@/types/products";
 import axios from "axios";
@@ -23,21 +14,41 @@ interface CartItemState {
     discount: number;
 }
 
-// Props dari controller
+interface StudentBalance {
+    name: string;
+    balance: number;
+    balance_formatted: string;
+}
+
 interface Props {
     products: Product[];
 }
 
 export default function CanteenPOSPage({ products }: Props) {
-    // const { flash } = usePage<FlashProps>().props;
-    // const [params, setParams] = useQueryParams();
-    // const [searchValue, setSearchValue] = useState(params.search || '');
-    
     const [cart, setCart] = useState<CartItemState[]>([]);
     const [rfid, setRfid] = useState('');
     const [barcode, setBarcode] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const barcodeInputRef = useRef<HTMLInputElement>(null);
+    const [showBalanceModal, setShowBalanceModal] = useState(false);
+    const [checkedStudent, setCheckedStudent] = useState<StudentBalance | null>(null);
+
+
+    const handleCheckBalance = () => {
+        if (!rfid) {
+            toast.warn('Silakan tap kartu RFID terlebih dahulu.');
+            return;
+        }
+
+        axios.post(route('api.canteen.check-balance'), { rfid_uid: rfid })
+            .then(response => {
+                setCheckedStudent(response.data.data);
+                setShowBalanceModal(true);
+            })
+            .catch(error => {
+                toast.error(error.response?.data?.message || 'Data tidak ditemukan.');
+            });
+    };
 
     const handleScan = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -61,53 +72,33 @@ export default function CanteenPOSPage({ products }: Props) {
         } else {
             toast.error('Produk tidak ditemukan!');
         }
-        setBarcode(''); // Kosongkan input setelah scan
+        setBarcode(''); 
     };
 
-    // Fungsi untuk memproses pembayaran
     const handlePayment = () => {
         if (cart.length === 0 || !rfid) {
             toast.warn('Keranjang atau RFID tidak boleh kosong!');
             return;
         }
         setIsSubmitting(true);
-        // router.post(route('api.canteen.checkout'), {
-        //     rfid_uid: rfid,
-        //     cart: cart.map(item => ({ product_id: item.product_id, quantity: item.quantity })),
-        // }, {
-        //     onSuccess: () => {
-        //         toast.success('Pembayaran berhasil!');
-        //         setCart([]);
-        //         setRfid('');
-        //     },
-        //     onError: (errors) => {
-        //         const errorMsg = errors.message || Object.values(errors)[0];
-        //         toast.error(errorMsg);
-        //     },
-        //     onFinish: () => setIsSubmitting(false),
-        // });
+
         axios.post(route('api.canteen.checkout'), {
             rfid_uid: rfid,
             cart: cart.map(item => ({ product_id: item.product_id, quantity: item.quantity })),
         })
         .then(response => {
-            // 'then' akan berjalan jika request berhasil (status 2xx)
-            toast.success(response.data.message); // Ambil pesan dari respons JSON
-            setCart([]); // Kosongkan keranjang
+            toast.success(response.data.message);
+            setCart([]);
             setRfid('');
             
-            // Penting: Beritahu Inertia untuk memuat ulang data props yang mungkin berubah
-            // (misalnya data siswa untuk update saldo di layar)
             router.reload({ only: ['student', 'flash'] });
 
         })
         .catch(error => {
-            // 'catch' akan berjalan jika request gagal (status 4xx atau 5xx)
             const errorMsg = error.response?.data?.message || 'Transaksi Gagal.';
             toast.error(errorMsg);
         })
         .finally(() => {
-            // 'finally' akan selalu berjalan setelah request selesai
             setIsSubmitting(false);
         });
     };
@@ -117,7 +108,6 @@ export default function CanteenPOSPage({ products }: Props) {
         toast.info('Item dihapus dari keranjang.');
     };
 
-    // Hitung total belanja
     const totalPurchase = cart.reduce((sum, item) => {
         const finalPrice = item.price - item.discount;
         return sum + (finalPrice * item.quantity);
@@ -194,7 +184,6 @@ export default function CanteenPOSPage({ products }: Props) {
                 )}
             </Table>
 
-            
             <div className="mt-4">
                 <h4>Total: Rp {totalPurchase.toLocaleString('id-ID')}</h4>
                 <InputGroup>
@@ -206,8 +195,22 @@ export default function CanteenPOSPage({ products }: Props) {
                     <Button onClick={handlePayment} disabled={isSubmitting}>
                         {isSubmitting ? 'Memproses...' : 'Bayar'}
                     </Button>
+                    <Button variant="secondary" onClick={handleCheckBalance}>
+                        Cek Saldo
+                    </Button>
                 </InputGroup>
             </div>
+
+            <Modal show={showBalanceModal} onHide={() => setShowBalanceModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Informasi Saldo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="text-center">
+                    <h3>{checkedStudent?.name}</h3>
+                    <p className="lead">Saldo Saat Ini:</p>
+                    <h2 className="fw-bold">{checkedStudent?.balance_formatted}</h2>
+                </Modal.Body>
+            </Modal>
         </AppLayout>
     );
 }

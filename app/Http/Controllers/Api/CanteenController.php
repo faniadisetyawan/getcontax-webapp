@@ -90,4 +90,21 @@ class CanteenController extends Controller
             return response()->json(['message' => 'Transaksi Gagal: ' . $e->getMessage()], 422);
         }
     }
+
+    public function checkBalance(Request $request)
+    {
+        $request->validate(['rfid_uid' => 'required|exists:students,rfid_uid']);
+
+        $student = Student::where('rfid_uid', $request->rfid_uid)->firstOrFail();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data ditemukan.',
+            'data' => [
+                'name' => $student->name,
+                'balance' => $student->balance,
+                'balance_formatted' => 'Rp ' . number_format($student->balance, 0, ',', '.'),
+            ]
+        ]);
+    }
 }

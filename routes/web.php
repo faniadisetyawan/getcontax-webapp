@@ -5,6 +5,7 @@ use App\Http\Controllers\CanteenPOSController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\FinancialManagementController;
+use App\Http\Controllers\KioskController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +34,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/canteen/withdraw', [CanteenFinanceController::class, 'withdraw'])->name('canteen.withdraw');
     });
 });
+
+Route::get('/check-balance-kiosk', [KioskController::class, 'showBalanceChecker'])->name('kiosk.balance');
+
 
 require __DIR__ . '/auth.php';
