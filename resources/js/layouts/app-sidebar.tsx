@@ -7,6 +7,7 @@ import {
     PiChartLineUpDuotone,
     PiHandCoinsDuotone,
     PiIdentificationBadgeDuotone,
+    PiMoneyDuotone,
     PiNotebookDuotone,
     PiSpeedometerDuotone,
     PiToggleLeftDuotone,
@@ -66,6 +67,21 @@ const items: NavItem[] = [
             {
                 label: 'Print Label Barcode',
                 url: '/canteens/label/print',
+            },
+            {
+                label: 'Keuangan Kantin',
+                url: '/finance/canteen',
+            },
+        ],
+    },
+    {
+        label: 'Keuangan',
+        url: '/finance',
+        icon: <PiMoneyDuotone className="nav-icon" />,
+        children: [
+            {
+                label: 'Keuangan Kantin',
+                url: '/finance/canteen',
             },
         ],
     },
