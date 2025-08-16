@@ -5,11 +5,15 @@ import {
     PiBowlFoodDuotone,
     PiBriefcaseDuotone,
     PiChartLineUpDuotone,
+    PiFarmDuotone,
     PiHandCoinsDuotone,
     PiIdentificationBadgeDuotone,
     PiMoneyDuotone,
     PiNotebookDuotone,
+    PiPersonArmsSpreadDuotone,
+    PiPersonDuotone,
     PiSpeedometerDuotone,
+    PiStudentDuotone,
     PiToggleLeftDuotone,
     PiToggleRightDuotone,
     PiXCircleDuotone
@@ -46,6 +50,26 @@ const items: NavItem[] = [
         label: 'Sekolah',
         url: '/master/schools',
         icon: <PiBriefcaseDuotone className="nav-icon" />,
+    },
+    {
+        label: 'Wali Murid',
+        url: '/master/guardians',
+        icon: <PiPersonDuotone className="nav-icon" />,
+    },
+    {
+        label: 'Siswa',
+        url: '/master/students',
+        icon: <PiStudentDuotone className="nav-icon" />,
+        children: [
+            {
+                label: 'Daftar Siswa',
+                url: '/master/students',
+            },
+            {
+                label: 'Impor Data Siswa',
+                url: '/master/students/import',
+            },
+        ],
     },
     {
         label: 'Features',

@@ -5,9 +5,11 @@ use App\Http\Controllers\CanteenPOSController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\FinancialManagementController;
+use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\KioskController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +20,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('master')->as('master.')->group(function () {
         Route::resource('schools', SchoolController::class)->names('schools');
+        Route::get('/students/import', [StudentController::class, 'showImportForm'])->name('students.import.form');
+        Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+        Route::get('/students/template/download', [StudentController::class, 'downloadTemplate'])->name('students.template.download');
+        Route::post('/students/{student}/register-card', [StudentController::class, 'registerCard'])->name('students.register-card');
+        Route::resource('students', StudentController::class)->names('students');
+        Route::resource('guardians', GuardianController::class)->names('guardians');
     });
     Route::prefix('guardians')->as('guardians.')->group(function () {
         Route::resource('financials', FinancialManagementController::class)->names('financials');
