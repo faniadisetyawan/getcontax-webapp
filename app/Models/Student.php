@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
     protected $fillable = [
         'school_id',
+        'reg_id',
         'nisn',
+        'nis_nipd',
         'name',
         'rfid_uid',
         'va_number',

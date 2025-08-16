@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
 
         $student1 = Student::create([
             'school_id' => $school->id,
-            'nisn' => '2526P002',
+            'reg_id' => 'C25260001',
             'name' => 'Al Farabi Muhammad Gaffi',
             'rfid_uid' => 'A1B2C3D4', // Contoh ID RFID
             'va_number' => '880012345678', // Contoh No VA

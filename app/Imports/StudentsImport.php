@@ -27,10 +27,12 @@ class StudentsImport implements ToCollection, WithHeadingRow
             // Ini mencegah data siswa duplikat.
             Student::updateOrCreate(
                 [
-                    'nisn' => $row['nisn'],
+                    'reg_id' => $row['reg_id'],
                     'school_id' => $this->schoolId,
                 ],
                 [
+                    'nisn' => $row['nisn'],
+                    'nis_nipd' => $row['nis_nipd'],
                     'name' => $row['nama'],
                     'gender' => $row['jenis_kelamin'],
                     'birth_place' => $row['tempat_lahir'],

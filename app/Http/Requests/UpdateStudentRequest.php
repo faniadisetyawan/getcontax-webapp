@@ -21,11 +21,11 @@ class UpdateStudentRequest extends FormRequest
      */
     public function rules(): array
     {
-        $studentId = $this->route('student') ? $this->route('student')->id : null;
-
         return [
             'name'          => 'required|string|max:255',
-            'nisn'          => 'required|string|max:20|unique:students,nisn,' . $studentId,
+            'reg_id'        => 'nullable|string|max:20|unique:students,reg_id',
+            'nisn'          => 'nullable|string|max:20|unique:students,nisn',
+            'nis_nipd'      => 'nullable|string|max:20|unique:students,nis_nipd',
             'gender'        => 'nullable|string|in:Laki-laki,Perempuan',
             'birth_place'   => 'nullable|string|max:255',
             'birth_date'    => 'nullable|date',

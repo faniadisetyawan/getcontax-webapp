@@ -9,8 +9,10 @@ export interface Guardian {
 // Tipe data utama untuk objek Student
 export interface Student {
     id: number;
+    reg_id: string;
     school_id: number;
     nisn: string;
+    nis_nipd: string;
     name: string;
     rfid_uid: string | null;
     va_number: string | null;

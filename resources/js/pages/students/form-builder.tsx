@@ -18,7 +18,9 @@ interface Props {
 export default function FormBuilder({ metaOptions, old }: Props) {
     const { data, setData, errors, post, processing, clearErrors } = useForm({
         name: '',
+        reg_id: '',
         nisn: '',
+        nis_nipd: '',
         gender: '',
         birth_place: '',
         birth_date: '',
@@ -29,7 +31,9 @@ export default function FormBuilder({ metaOptions, old }: Props) {
             setData(prev => ({
                 ...prev,
                 name: old.name || '',
+                reg_id: old.reg_id || '',
                 nisn: old.nisn || '',
+                nis_nipd: old.nis_nipd || '',
                 gender: old.gender || '',
                 birth_place: old.birth_place || '',
                 birth_date: old.birth_date || '',
@@ -73,8 +77,8 @@ export default function FormBuilder({ metaOptions, old }: Props) {
                         active: true,
                     },
                     {
-                        title: 'Inventory',
-                        url: route('canteens.inventory.index'),
+                        title: 'Siswa',
+                        url: route('master.students.index'),
                     },
                     {
                         title: metaOptions.title,
@@ -91,18 +95,34 @@ export default function FormBuilder({ metaOptions, old }: Props) {
                         <Card.Header><Card.Title as="h5">Informasi Siswa</Card.Title></Card.Header>
                         <Card.Body>
                             <Row>
-                                <Col md={6}>
+                                <Col md={12}>
                                     <Form.Group className="mb-3">
                                         <Form.Label htmlFor="name" className="required">Nama Lengkap</Form.Label>
                                         <Form.Control id="name" value={data.name} onChange={e => setData('name', e.target.value)} isInvalid={!!errors.name} />
                                         <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
+                                
+                                <Col md={12}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="reg_id" className="required">REG ID</Form.Label>
+                                        <Form.Control id="reg_id" value={data.reg_id} onChange={e => setData('reg_id', e.target.value)} isInvalid={!!errors.reg_id} />
+                                        <Form.Control.Feedback type="invalid">{errors.reg_id}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label htmlFor="nisn" className="required">NISN</Form.Label>
+                                        <Form.Label htmlFor="nisn">NISN</Form.Label>
                                         <Form.Control id="nisn" value={data.nisn} onChange={e => setData('nisn', e.target.value)} isInvalid={!!errors.nisn} />
                                         <Form.Control.Feedback type="invalid">{errors.nisn}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+                                
+                                <Col md={6}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="nis_nipd">NIS_NIPD</Form.Label>
+                                        <Form.Control id="nis_nipd" value={data.nis_nipd} onChange={e => setData('nis_nipd', e.target.value)} isInvalid={!!errors.nis_nipd} />
+                                        <Form.Control.Feedback type="invalid">{errors.nis_nipd}</Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
                                 <Form.Group className="mb-3">

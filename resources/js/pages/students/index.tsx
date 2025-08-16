@@ -108,9 +108,17 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
             cell: info => <div className="text-start">{info.getValue()}</div>,
             header: () => <div className="text-start">Nama Siswa</div>
         }),
+        columnHelper.accessor('reg_id', {
+            cell: info => <div className="text-start">{info.getValue()}</div>,
+            header: () => <div className="text-start">REG ID</div>
+        }),
         columnHelper.accessor('nisn', {
             cell: info => <div className="text-start">{info.getValue()}</div>,
             header: () => <div className="text-start">NISN</div>
+        }),
+        columnHelper.accessor('nis_nipd', {
+            cell: info => <div className="text-start">{info.getValue()}</div>,
+            header: () => <div className="text-start">NIS NIPD</div>
         }),
         columnHelper.accessor('rfid_uid', {
             cell: info => <div className="text-start">{info.getValue()}</div>,

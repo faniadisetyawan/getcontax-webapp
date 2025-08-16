@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateSchoolRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Imports\StudentsImport;
 use App\Models\Student;
@@ -96,10 +96,9 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSchoolRequest $request, string $id)
+    public function update(UpdateStudentRequest $request, string $id)
     {
         $student = Student::findOrFail($id);
-        return response()->json($request->all());
         $student->update($request->validated());
 
         return to_route('master.students.index')->with('success', 'Successfully updated');

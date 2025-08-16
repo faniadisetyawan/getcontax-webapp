@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
+            $table->string('reg_id')->unique();
             $table->foreignId('school_id')->constrained()->onDelete('cascade');
-            $table->char('nisn', 10)->unique();
+            $table->string('nisn')->unique()->nullable();
+            $table->string('nis_nipd')->unique()->nullable();
             $table->string('name');
             $table->string('rfid_uid')->unique()->nullable();
             $table->string('va_number')->unique()->nullable();

@@ -37,7 +37,7 @@ export default function StudentImportPage() {
                 <Card.Body>
                     <p>
                         Silakan upload file Excel (.xlsx, .xls) atau CSV (.csv) yang berisi data siswa.
-                        Pastikan file Anda memiliki kolom header: <strong>nisn, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, tahun_masuk</strong>.
+                        Pastikan file Anda memiliki kolom header: <strong>reg_id, nisn, nis_nipd, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, tahun_masuk</strong>.
                     </p>
                         <a href={route('master.students.template.download')}>Download Template Excel di Sini</a>
 
