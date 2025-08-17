@@ -12,26 +12,34 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Email atau Password salah.'
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
+        if (!$user->hasRole('wali_murid')) {
+            return response()->json([
+                'message' => 'Akses ditolak. Hanya wali murid yang dapat login melalui aplikasi ini.'
+            ], 403);
+        }
+
+        $user->load(['school', 'children']);
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login berhasil',
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 

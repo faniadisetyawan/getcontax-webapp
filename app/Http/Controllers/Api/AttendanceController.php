@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
 use App\Models\Student;
 use Carbon\Carbon;
@@ -97,5 +98,27 @@ class AttendanceController extends Controller
             'message' => 'Check-out berhasil!',
             'data' => ['name' => $student->name, 'time_out' => $attendance->time_out]
         ]);
+    }
+
+    public function daily(Request $request)
+    {
+        $validated = $request->validate([
+            'student_id' => 'required|integer|exists:students,id',
+            'date' => 'sometimes|date_format:Y-m-d',
+        ]);
+
+        $date = $request->query('date', now()->toDateString());
+
+        $attendance = Attendance::firstOrNew(
+            [
+                'student_id' => intval($validated['student_id']),
+                'date' => $date,
+            ]
+        );
+
+        AttendanceResource::withoutWrapping();
+        $resource = new AttendanceResource($attendance);
+
+        return response()->json($resource);
     }
 }

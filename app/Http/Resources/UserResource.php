@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
             'school' => new SchoolResource($this->school),
-            'children_count' => count($this->children),
+            'childrens' => $this->children,
         ];
     }
 }

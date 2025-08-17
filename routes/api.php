@@ -19,7 +19,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::prefix('attendances')->group(function () {
-    Route::post('/tap', [AttendanceController::class, 'tap']);
+    Route::get('daily', [AttendanceController::class, 'daily'])->middleware('auth:sanctum');
+    Route::post('tap', [AttendanceController::class, 'tap']);
 });
 
 Route::post('/webhooks/bank-transfer-handler', [WebhookController::class, 'handleBankTransfer']);
