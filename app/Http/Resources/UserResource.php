@@ -25,7 +25,9 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
             'school' => new SchoolResource($this->school),
-            'childrens' => $this->children,
+            // 'childrens' => $this->children,
+            'roles' => $this->whenLoaded('roles', fn() => $this->roles->pluck('name')),
+            'children' => StudentResource::collection($this->whenLoaded('children')),
         ];
     }
 }

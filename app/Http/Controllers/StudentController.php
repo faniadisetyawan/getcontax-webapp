@@ -29,7 +29,7 @@ class StudentController extends Controller
         $query = Student::query();
         if ($request->filled('search')) {
             $query->where('name', 'like', "%{$search}%")
-                ->orWhere('barcode', 'like', "%{$search}%");
+                ->orWhere('reg_id', 'like', "%{$search}%");
         }
         $query->orderBy($sort, $order);
         $resource = $query->paginate($perPage);
