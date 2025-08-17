@@ -21,6 +21,15 @@ class FinancialHistory extends Model
         'sourceable_type',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'amount' => 'float',
+            'balance_before' => 'float',
+            'balance_after' => 'float',
+        ];
+    }
+
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
