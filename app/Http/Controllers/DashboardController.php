@@ -17,9 +17,9 @@ class DashboardController extends Controller
 
             $children = $user->children()
                 ->with(['attendances' => function ($query) {
-                    $query->latest()->limit(10);
+                    $query->latest()->limit(5);
                 }, 'financialHistories' => function ($query) {
-                    $query->latest()->limit(10);
+                    $query->latest()->limit(5);
                 }])
                 ->get()
                 ->map(function ($child) {

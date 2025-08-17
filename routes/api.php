@@ -3,20 +3,23 @@
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CanteenController;
+use App\Http\Controllers\Api\GuardianController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/guardian/children', [GuardianController::class, 'getMyChildren'])->middleware('role:wali_murid');
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::get('/settings', [SettingController::class, 'index']);
-
-Route::get('/profile', [AuthController::class, 'profile'])->middleware('auth:sanctum');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::prefix('attendances')->group(function () {
     Route::get('daily', [AttendanceController::class, 'daily'])->middleware('auth:sanctum');
