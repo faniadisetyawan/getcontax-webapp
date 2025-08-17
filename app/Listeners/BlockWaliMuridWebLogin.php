@@ -29,9 +29,15 @@ class BlockWaliMuridWebLogin
      */
     public function handle(Login $event): void
     {
+        // Jangan jalankan listener ini jika request berasal dari API (mengharapkan JSON).
+        // Ini memungkinkan wali murid untuk login via API tapi tidak via web.
+        if ($this->request->wantsJson()) {
+            return;
+        }
+
         // Cek jika guard yang digunakan adalah 'web' DAN user memiliki peran 'wali_murid'
-        if ($event->guard === 'web' && $event->user->hasRole('wali_murid')) {
-            
+        if ($event->guard === 'web' && method_exists($event->user, 'hasRole') && $event->user->hasRole('wali_murid')) {
+
             // Logout user dari sesi web yang baru saja dibuat
             Auth::guard('web')->logout();
 
