@@ -26,6 +26,14 @@ class Student extends Model
         'status',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'balance' => 'float',
+            'entry_year' => 'integer',
+        ];
+    }
+
     public function guardians(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'student_guardian')

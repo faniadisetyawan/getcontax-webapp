@@ -81,7 +81,7 @@ class User extends Authenticatable
     {
         return Attribute::get(function () {
             if (is_null($this->avatar)) {
-                return asset("assets/blank-image.svg");
+                return asset("assets/user-placeholder.png");
             } else {
                 return asset("storage/users/{$this->id}/{$this->avatar}");
             }
