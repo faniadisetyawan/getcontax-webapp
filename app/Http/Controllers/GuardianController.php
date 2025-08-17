@@ -51,7 +51,9 @@ class GuardianController extends Controller
      */
     public function create()
     {
-        $students = Student::where('school_id', Auth::user()->school_id)->get(['id', 'name', 'reg_id', 'nisn', 'nis_nipd']);
+        $students = Student::where('school_id', Auth::user()->school_id)
+            ->whereDoesntHave('guardians')
+            ->get(['id', 'name', 'reg_id']);
 
         return Inertia::render('guardians/form-builder', [
             'metaOptions' => ['title' => 'Tambah Wali Murid'],
@@ -69,6 +71,8 @@ class GuardianController extends Controller
             'school_id' => Auth::user()->school_id,
             'name' => $request->name,
             'email' => $request->email,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
         ]);
 
@@ -76,9 +80,12 @@ class GuardianController extends Controller
         if ($waliMuridRole) {
             $guardian->roles()->attach($waliMuridRole);
         }
+        $studentsToSync = [];
+        foreach ($request->relations as $relation) {
+            $studentsToSync[$relation['student_id']] = ['relationship_type' => $relation['relationship_type']];
+        }
 
-        $guardian->children()->attach($request->student_ids);
-
+        $guardian->children()->sync($studentsToSync);
         return to_route('master.guardians.index')->with('success', 'Wali Murid berhasil ditambahkan.');
     }
 
@@ -97,10 +104,18 @@ class GuardianController extends Controller
     {
         $resource = User::findOrFail($id);
         $resource->load('children:id,name,reg_id');
+
+        $childrenIds = $resource->children->pluck('id');
+
         UserResource::withoutWrapping();
         $old = new UserResource($resource);
+
         $students = Student::where('school_id', Auth::user()->school_id)
-            ->get(['id', 'name', 'reg_id', 'nisn', 'nis_nipd']);
+            ->where(function ($query) use ($childrenIds) {
+                $query->whereDoesntHave('guardians')
+                    ->orWhereIn('id', $childrenIds);
+            })
+            ->get(['id', 'name', 'reg_id']);
 
         return Inertia::render('guardians/form-builder', [
             'metaOptions' => [
@@ -120,6 +135,8 @@ class GuardianController extends Controller
         $guardian->update([
             'name' => $request->name,
             'email' => $request->email,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number,
         ]);
 
         if ($request->filled('password')) {
@@ -127,7 +144,12 @@ class GuardianController extends Controller
             $guardian->save();
         }
 
-        $guardian->children()->sync($request->student_ids);
+        $studentsToSync = [];
+        foreach ($request->relations as $relation) {
+            $studentsToSync[$relation['student_id']] = ['relationship_type' => $relation['relationship_type']];
+        }
+
+        $guardian->children()->sync($studentsToSync);
 
         return to_route('master.guardians.index')->with('success', 'Wali Murid berhasil diperbarui.');
     }
@@ -143,5 +165,4 @@ class GuardianController extends Controller
 
         return to_route('master.guardians.index')->with('success', 'Wali Murid berhasil dihapus.');
     }
-
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateGuardianRequest extends FormRequest
 {
@@ -25,9 +26,20 @@ class UpdateGuardianRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $guardianId,
-            'password' => 'nullable|sometimes|string|min:8|confirmed',
-            'student_ids' => 'required|array|min:1',
-            'student_ids.*' => 'required|exists:students,id',
+            'phone_number' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:1000',
+            'password' => [
+                'nullable',
+                'confirmed',
+                Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
+            'relations' => 'required|array|min:1',
+            'relations.*.student_id' => 'required|exists:students,id',
+            'relations.*.relationship_type' => 'required|string|max:255',
         ];
     }
 }

@@ -29,6 +29,11 @@ class StudentResource extends JsonResource
             'birth_date' => $this->birth_date,
             'entry_year' => $this->entry_year,
             'status' => $this->status,
+            'pivot' => $this->whenPivotLoaded('student_guardian', function () {
+                return [
+                    'relationship_type' => $this->pivot->relationship_type,
+                ];
+            }),
         ];
     }
 }

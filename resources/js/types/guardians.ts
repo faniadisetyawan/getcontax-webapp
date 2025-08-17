@@ -7,6 +7,12 @@ export interface Guardian {
     id: number;
     name: string;
     email: string;
-    phone_number: string | null;
-    children: SimpleStudent[]; // <-- Pastikan ini ada
+    phone_number: string;
+    address: string;
+    children?: Array<{
+        id: number;
+        pivot?: {
+            relationship_type: string;
+        };
+    }>;
 }
