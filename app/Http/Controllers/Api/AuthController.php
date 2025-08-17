@@ -45,7 +45,7 @@ class AuthController extends Controller
 
     public function profile()
     {
-        $resource = User::findOrFail(Auth::id());
+        $resource = User::with(['children'])->findOrFail(Auth::id());
 
         UserResource::withoutWrapping();
         return new UserResource($resource);
