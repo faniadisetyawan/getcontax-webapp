@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CanteenController;
+use App\Http\Controllers\Api\FinancialHistoryController;
 use App\Http\Controllers\Api\GuardianController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\WebhookController;
@@ -24,6 +25,11 @@ Route::get('/settings', [SettingController::class, 'index']);
 Route::prefix('attendances')->group(function () {
     Route::get('daily', [AttendanceController::class, 'daily'])->middleware('auth:sanctum');
     Route::post('tap', [AttendanceController::class, 'tap']);
+});
+
+Route::prefix('financial-histories')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [FinancialHistoryController::class, 'index']);
+    Route::get('latest/{student}', [FinancialHistoryController::class, 'latest']);
 });
 
 Route::post('/webhooks/bank-transfer-handler', [WebhookController::class, 'handleBankTransfer']);
