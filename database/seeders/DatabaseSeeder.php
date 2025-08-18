@@ -15,15 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $school = School::create([
-            'name' => 'SMAS CAKRA BUANA',
-            'npsn' => '20229150',
-            'address' => 'Jl. Raya Sawangan No.91, Mampang, Kec. Pancoran Mas, Kota Depok, Jawa Barat 16433',
-            'phone' => '(021) 7765620',
-            'checkin_start_time' => '06:00:00',
-            'checkin_end_time' => '08:00:00',
-            'checkout_start_time' => '15:00:00',
-            'checkout_end_time' => '17:00:00',
+        $this->call([
+            SettingSeeder::class,
+            SchoolSeeder::class,
+            StudentSeeder::class,
         ]);
 
         $roles = [
@@ -37,6 +32,8 @@ class DatabaseSeeder extends Seeder
         foreach ($roles as $roleData) {
             Role::create($roleData);
         }
+
+        $school = School::find(1);
 
         // --- User Ketua Yayasan ---
         $yayasanUser = User::create([
@@ -105,23 +102,8 @@ class DatabaseSeeder extends Seeder
         $waliRole = Role::where('name', 'wali_murid')->first();
         $waliUser->roles()->attach($waliRole);
 
-        $student1 = Student::create([
-            'school_id' => $school->id,
-            'reg_id' => 'C25260001',
-            'name' => 'Al Farabi Muhammad Gaffi',
-            'rfid_uid' => 'A1B2C3D4', // Contoh ID RFID
-            'va_number' => '880012345678', // Contoh No VA
-            'gender' => 'Laki-laki',
-            'birth_place' => 'Depok',
-            'birth_date' => '2008-05-10',
-            'entry_year' => '2023',
-        ]);
-
+        $selectedStudent = Student::find(1);
         // Hubungkan Siswa 1 dengan walinya
-        $student1->guardians()->attach($waliUser->id, ['relationship_type' => 'Ayah']);
-
-        $this->call([
-            SettingSeeder::class,
-        ]);
+        $selectedStudent->guardians()->attach($waliUser->id, ['relationship_type' => 'Ayah']);
     }
 }
