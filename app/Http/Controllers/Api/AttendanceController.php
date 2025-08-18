@@ -11,6 +11,21 @@ use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
+    public function index(Request $request)
+    {
+        $studentId = $request->query('student_id');
+        $sort = $request->query('sort', 'date');
+        $order = $request->query('order', 'desc');
+        $perPage = $request->query('per_page', 10);
+
+        $query = Attendance::query();
+        $query->where('student_id', $studentId);
+        $query->orderBy($sort, $order);
+        $resource = $query->paginate($perPage);
+
+        return AttendanceResource::collection($resource);
+    }
+
     public function tap(Request $request)
     {
         $request->validate(['rfid_uid' => 'required|exists:students,rfid_uid']);

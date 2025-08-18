@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/settings', [SettingController::class, 'index']);
 
 Route::prefix('attendances')->group(function () {
+    Route::get('/', [AttendanceController::class, 'index'])->middleware('auth:sanctum');
     Route::get('daily', [AttendanceController::class, 'daily'])->middleware('auth:sanctum');
     Route::post('tap', [AttendanceController::class, 'tap']);
 });
