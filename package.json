@@ -39,6 +39,8 @@
         "concurrently": "^9.0.1",
         "framer-motion": "^12.23.12",
         "globals": "^15.14.0",
+        "highcharts": "^12.3.0",
+        "highcharts-react-official": "^3.2.2",
         "laravel-vite-plugin": "^2.0",
         "lottie-react": "^2.4.1",
         "lucide-react": "^0.475.0",
