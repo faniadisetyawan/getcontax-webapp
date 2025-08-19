@@ -40,4 +40,11 @@ class School extends Model
     {
         return $this->hasMany(Student::class);
     }
+
+    protected $casts = [
+        'checkin_start_time' => 'datetime:H:i',
+        'checkin_end_time' => 'datetime:H:i',
+        'checkout_start_time' => 'datetime:H:i',
+        'checkout_end_time' => 'datetime:H:i',
+    ];
 }

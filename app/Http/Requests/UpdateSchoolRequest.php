@@ -28,6 +28,10 @@ class UpdateSchoolRequest extends FormRequest
             'address' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'max:50'],
             'logo' => ['nullable', 'image'],
+            'checkin_start_time' => 'required|date_format:H:i',
+            'checkin_end_time' => 'required|date_format:H:i',
+            'checkout_start_time' => 'required|date_format:H:i',
+            'checkout_end_time' => 'required|date_format:H:i',
         ];
     }
 }

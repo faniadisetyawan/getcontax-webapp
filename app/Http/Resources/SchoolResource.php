@@ -22,6 +22,10 @@ class SchoolResource extends JsonResource
             'phone' => $this->phone,
             'logo' => $this->logo,
             'logo_url' => $this->logoUrl,
+            'checkin_start_time' => $this->checkin_start_time,
+            'checkin_end_time' => $this->checkin_end_time,
+            'checkout_start_time' => $this->checkout_start_time,
+            'checkout_end_time' => $this->checkout_end_time,
         ];
     }
 }

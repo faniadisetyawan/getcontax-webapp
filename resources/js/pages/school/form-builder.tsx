@@ -20,16 +20,39 @@ export default function FormBuilder({ metaOptions, old }: Props) {
         address: '',
         phone: '',
         logo: null as File | null,
+        checkin_start_time: '',
+        checkin_end_time: '',
+        checkout_start_time: '',
+        checkout_end_time: '',
     });
 
     useEffect(() => {
         if (!!old && old?.id) {
+            const formatTime = (time: string | null) => {
+                if (!time) return '';
+                // If time is already in HH:mm format, return as is
+                if (time.match(/^\d{2}:\d{2}$/)) return time;
+                // Otherwise try to format it
+                try {
+                    return new Date(time).toLocaleTimeString('en-US', {
+                        hour12: false,
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } catch {
+                    return '';
+                }
+            };
             setData(prev => ({
                 ...prev,
                 npsn: old?.npsn ?? '',
                 name: old?.name ?? '',
                 address: old?.address ?? '',
                 phone: old?.phone ?? '',
+                checkin_start_time: formatTime(old?.checkin_start_time),
+                checkin_end_time: formatTime(old?.checkin_end_time),
+                checkout_start_time: formatTime(old?.checkout_start_time),
+                checkout_end_time: formatTime(old?.checkout_end_time),
             }));
         }
     }, [old]);
@@ -132,6 +155,55 @@ export default function FormBuilder({ metaOptions, old }: Props) {
                                     isInvalid={!!errors.address}
                                 />
                                 <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-4">
+                                <Form.Label>Check-in Time Range</Form.Label>
+                                <Row>
+                                    <Col>
+                                        <Form.Control
+                                            type="time"
+                                            name="checkin_start_time"
+                                            value={data.checkin_start_time}
+                                            onChange={(e) => setData('checkin_start_time', e.target.value)}
+                                            isInvalid={!!errors.checkin_start_time}
+                                        />
+                                        <Form.Control.Feedback type="invalid">{errors.checkin_start_time}</Form.Control.Feedback>
+                                    </Col>
+                                    <Col>
+                                        <Form.Control
+                                            type="time"
+                                            name="checkin_end_time"
+                                            value={data.checkin_end_time}
+                                            onChange={(e) => setData('checkin_end_time', e.target.value)}
+                                            isInvalid={!!errors.checkin_end_time}
+                                        />
+                                        <Form.Control.Feedback type="invalid">{errors.checkin_end_time}</Form.Control.Feedback>
+                                    </Col>
+                                </Row>
+                            </Form.Group><Form.Group className="mb-4">
+                                <Form.Label>Check-out Time Range</Form.Label>
+                                <Row>
+                                    <Col>
+                                        <Form.Control
+                                            type="time"
+                                            name="checkout_start_time"
+                                            value={data.checkout_start_time}
+                                            onChange={(e) => setData('checkout_start_time', e.target.value)}
+                                            isInvalid={!!errors.checkout_start_time}
+                                        />
+                                        <Form.Control.Feedback type="invalid">{errors.checkout_start_time}</Form.Control.Feedback>
+                                    </Col>
+                                    <Col>
+                                        <Form.Control
+                                            type="time"
+                                            name="checkout_end_time"
+                                            value={data.checkout_end_time}
+                                            onChange={(e) => setData('checkout_end_time', e.target.value)}
+                                            isInvalid={!!errors.checkout_end_time}
+                                        />
+                                        <Form.Control.Feedback type="invalid">{errors.checkout_end_time}</Form.Control.Feedback>
+                                    </Col>
+                                </Row>
                             </Form.Group>
                         </Col>
                         <Col md={6}>
