@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('guardians')->as('guardians.')->group(function () {
         Route::resource('financials', FinancialManagementController::class)->names('financials');
     });
-    Route::resource('attendances', AttendanceController::class)->names('attendances');
+    Route::resource('attendances', AttendanceController::class)->names('attendances')->only(['index', 'destroy']);
     Route::prefix('canteens')->as('canteens.')->group(function () {
         Route::resource('inventory', ProductController::class);
         Route::get('pos', [CanteenPOSController::class, 'index'])->name('pos.index');

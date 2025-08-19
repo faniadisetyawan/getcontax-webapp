@@ -18,6 +18,7 @@ class StudentResource extends JsonResource
             'id' => $this->id,
             'reg_id' => $this->reg_id,
             'school_id' => $this->school_id,
+            'school' => new SchoolResource($this->school),
             'nisn' => $this->nisn,
             'nis_nipd' => $this->nis_nipd,
             'name' => $this->name,

@@ -1,3 +1,5 @@
+import { School } from "./school";
+
 // Tipe data untuk User dalam konteks sebagai Wali Murid (Guardian)
 export interface Guardian {
     id: number;
@@ -11,6 +13,7 @@ export interface Student {
     id: number;
     reg_id: string;
     school_id: number;
+    school?: School;
     nisn: string;
     nis_nipd: string;
     name: string;
@@ -26,5 +29,5 @@ export interface Student {
     updated_at: string;
 
     // Relasi (opsional, tergantung data yang Anda kirim dari controller)
-    guardians?: Guardian[]; 
+    guardians?: Guardian[];
 }

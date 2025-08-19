@@ -16,15 +16,24 @@ class AttendanceController extends Controller
         $perPage = $request->query('per_page', 15);
 
         $query = Attendance::query();
+        $query->with(['student']);
         $query->orderBy($sort, $order);
         $resource = $query->paginate($perPage);
-        $attendances = AttendanceResource::collection($resource);
+        $data = AttendanceResource::collection($resource);
 
-        return Inertia::render('attendance/listing', [
+        return Inertia::render('attendance/index', [
             'metaOptions' => [
                 'title' => 'Riwayat Absensi',
             ],
-            'attendances' => $attendances,
+            'responseData' => $data,
         ]);
+    }
+
+    public function destroy($id)
+    {
+        $attendance = Attendance::findOrFail($id);
+        $attendance->delete();
+
+        return back()->with('success', 'Deleted successfully');
     }
 }

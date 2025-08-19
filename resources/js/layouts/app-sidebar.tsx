@@ -5,6 +5,7 @@ import {
     PiBowlFoodDuotone,
     PiBriefcaseDuotone,
     PiChartLineUpDuotone,
+    PiClockCounterClockwiseDuotone,
     PiFarmDuotone,
     PiHandCoinsDuotone,
     PiIdentificationBadgeDuotone,
@@ -74,6 +75,11 @@ const items: NavItem[] = [
     {
         label: 'Features',
         isHeading: true,
+    },
+    {
+        label: 'Riwayat Absensi',
+        url: '/attendances',
+        icon: <PiClockCounterClockwiseDuotone className="nav-icon" />,
     },
     {
         label: 'Kantin',
