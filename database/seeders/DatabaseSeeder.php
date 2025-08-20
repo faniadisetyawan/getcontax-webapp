@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             AttendanceSeeder::class,
             FinancialHistorySeeder::class,
+            SchoolClassSeeder::class,
         ]);
 
         $roles = [

@@ -13,6 +13,7 @@ export interface Student {
     id: number;
     reg_id: string;
     school_id: number;
+    school_class_id: number;
     school?: School;
     nisn: string;
     nis_nipd: string;

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Imports\StudentsImport;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,9 +50,11 @@ class StudentController extends Controller
      */
     public function create()
     {
+        $classes = SchoolClass::where('school_id', auth()->user()->school_id)->get(['id', 'name']);
         return Inertia::render('students/form-builder', [
             'metaOptions' => ['title' => 'Tambah Data Siswa'],
             'old' => null,
+            'classes' => $classes,
         ]);
     }
 
@@ -84,12 +87,15 @@ class StudentController extends Controller
         $resource = Student::findOrFail($id);
         StudentResource::withoutWrapping();
         $old = new StudentResource($resource);
+        $classes = SchoolClass::where('school_id', auth()->user()->school_id)->get(['id', 'name']);
+
 
         return Inertia::render('students/form-builder', [
             'metaOptions' => [
                 'title' => 'Edit Data',
             ],
             'old' => $old,
+            'classes' => $classes
         ]);
     }
 

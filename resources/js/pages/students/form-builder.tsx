@@ -9,13 +9,18 @@ import ReactDatePicker from "react-datepicker";
 import { PiSpeedometerDuotone } from "react-icons/pi";
 import "react-datepicker/dist/react-datepicker.css";
 
+interface SchoolClass {
+    id: number;
+    name: string;
+}
 
 interface Props {
     metaOptions: MetaOptions;
     old: Student | null;
+    classes: SchoolClass[];
 }
 
-export default function FormBuilder({ metaOptions, old }: Props) {
+export default function FormBuilder({ metaOptions, old, classes }: Props) {
     const { data, setData, errors, post, processing, clearErrors } = useForm({
         name: '',
         reg_id: '',
@@ -24,6 +29,9 @@ export default function FormBuilder({ metaOptions, old }: Props) {
         gender: '',
         birth_place: '',
         birth_date: '',
+        entry_year: '',
+        status: 'aktif',
+        school_class_id: '',
     });
 
     useEffect(() => {
@@ -37,6 +45,9 @@ export default function FormBuilder({ metaOptions, old }: Props) {
                 gender: old.gender || '',
                 birth_place: old.birth_place || '',
                 birth_date: old.birth_date || '',
+                entry_year: old.entry_year || '',
+                status: old.status || 'aktif',
+                school_class_id: old.school_class_id?.toString() || '',
             }));
         }
     }, [old]);
@@ -165,6 +176,32 @@ export default function FormBuilder({ metaOptions, old }: Props) {
                                 {errors.birth_date && <div className="text-danger small mt-1">{errors.birth_date}</div>}
                                 </Form.Group>
                             
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="entry_year">Tahun Masuk</Form.Label>
+                                        <Form.Control
+                                            id="entry_year"
+                                            type="number"
+                                            placeholder="Contoh: 2023"
+                                            value={data.entry_year}
+                                            onChange={e => setData('entry_year', e.target.value)}
+                                            isInvalid={!!errors.entry_year}
+                                        />
+                                        <Form.Control.Feedback type="invalid">{errors.entry_year}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                     <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="school_class_id">Kelas</Form.Label>
+                                        <Form.Select id="school_class_id" value={data.school_class_id} onChange={e => setData('school_class_id', e.target.value)} isInvalid={!!errors.school_class_id}>
+                                            <option value="">-- Belum Ditetapkan --</option>
+                                            {classes.map(cls => (
+                                                <option key={cls.id} value={cls.id}>{cls.name}</option>
+                                            ))}
+                                        </Form.Select>
+                                        <Form.Control.Feedback type="invalid">{errors.school_class_id}</Form.Control.Feedback>
+                                    </Form.Group>
                                 </Col>
                             </Row>
 

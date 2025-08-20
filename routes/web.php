@@ -10,6 +10,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\KioskController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/students/{student}/register-card', [StudentController::class, 'registerCard'])->name('students.register-card');
         Route::resource('students', StudentController::class)->names('students');
         Route::resource('guardians', GuardianController::class)->names('guardians');
+        Route::resource('classes', SchoolClassController::class)->names('classes');
     });
     Route::prefix('guardians')->as('guardians.')->group(function () {
         Route::resource('financials', FinancialManagementController::class)->names('financials');

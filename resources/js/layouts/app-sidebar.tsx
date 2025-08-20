@@ -14,6 +14,7 @@ import {
     PiPersonArmsSpreadDuotone,
     PiPersonDuotone,
     PiSpeedometerDuotone,
+    PiStudent,
     PiStudentDuotone,
     PiToggleLeftDuotone,
     PiToggleRightDuotone,
@@ -51,6 +52,11 @@ const items: NavItem[] = [
         label: 'Sekolah',
         url: '/master/schools',
         icon: <PiBriefcaseDuotone className="nav-icon" />,
+    },
+    {
+        label: 'Kelas',
+        url: '/master/classes',
+        icon: <PiNotebookDuotone className="nav-icon" />,
     },
     {
         label: 'Wali Murid',

@@ -12,6 +12,7 @@ class Student extends Model
 {
     protected $fillable = [
         'school_id',
+        'school_class_id', 
         'reg_id',
         'nisn',
         'nis_nipd',
@@ -54,5 +55,10 @@ class Student extends Model
     public function financialHistories(): HasMany
     {
         return $this->hasMany(FinancialHistory::class);
+    }
+
+    public function schoolClass(): BelongsTo
+    {
+        return $this->belongsTo(SchoolClass::class);
     }
 }
