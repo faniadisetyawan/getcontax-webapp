@@ -20,9 +20,9 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     //Admin Sekolah
-    Route::middleware('role:admin_sekolah')->group(function () {
+    Route::middleware('role:ketua_yayasan,admin_sekolah')->group(function () {
         Route::prefix('master')->as('master.')->group(function () {
             Route::resource('schools', SchoolController::class)->names('schools');
             Route::get('/students/import', [StudentController::class, 'showImportForm'])->name('students.import.form');
@@ -42,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     //Admin Kantin
-    Route::middleware('role:admin_kantin')->prefix('canteens')->as('canteens.')->group(function () {
+    Route::middleware('role:ketua_yayasan,admin_kantin')->prefix('canteens')->as('canteens.')->group(function () {
         Route::resource('inventory', ProductController::class);
         Route::get('pos', [CanteenPOSController::class, 'index'])->name('pos.index');
         Route::post('cart/add-item', [CanteenPOSController::class, 'addItemToCart'])->name('cart.add-item');
