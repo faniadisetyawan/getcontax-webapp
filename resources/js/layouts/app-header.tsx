@@ -40,9 +40,9 @@ export default function AppHeader({ setIsSidebarMobileOpen }: AppHeaderProps) {
                         />
                     </div>
                     <Link
-                        href={route('dashboard')}
+                        href={route('contacts.create')}
                         className={classNames('top-link', {
-                            'active': url.startsWith('/master/members/create')
+                            'active': url.startsWith('/contacts/create')
                         })}
                     >
                         <PiDotDuotone className="fs-3" />

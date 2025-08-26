@@ -22,8 +22,8 @@ class ContactResource extends JsonResource
             'avatar_url' => $this->avatarUrl,
             'status_id' => $this->status_id,
             'status' => new StatusResource($this->status),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

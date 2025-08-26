@@ -1,24 +1,23 @@
+import AppPagination from "@/components/app-pagination";
+import DataTable from "@/components/data-table";
+import EmptyData from "@/components/empty-data";
 import { useQueryParams } from "@/hooks/use-query-params";
 import AppLayout, { MySwalTheme } from "@/layouts/app-layout";
 import AppPageHeader from "@/layouts/app-page-header";
-import { FlashProps, MetaOptions, MetaPagination } from "@/types"
+import { FlashProps, MetaOptions, MetaPagination } from "@/types";
+import { Contact } from "@/types/contact";
 import { Head, router, usePage } from "@inertiajs/react";
+import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
-import { Badge, Button, Dropdown, Form, Image } from "react-bootstrap";
+import { Button, Container, Dropdown, Form, Image } from "react-bootstrap";
 import { PiDotsThreeOutlineDuotone, PiMagnifyingGlassDuotone, PiSpeedometerDuotone } from "react-icons/pi";
-import { createColumnHelper, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import DataTable from "@/components/data-table";
-import EmptyData from "@/components/empty-data";
-import AppPagination from "@/components/app-pagination";
 import { toast } from "react-toastify";
-import RegisterCardModal from "@/components/RegisterCardModal";
-import { Guardian } from "@/types/guardians";
 
 interface Props {
     metaOptions: MetaOptions;
     responseData: {
-        data: Guardian[];
+        data: Contact[];
         meta: MetaPagination;
     };
 }
@@ -27,7 +26,7 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
     const { flash } = usePage<FlashProps>().props;
     const [params, setParams] = useQueryParams();
     const [searchValue, setSearchValue] = useState(params.search || '');
-    
+
     useEffect(() => {
         if (!!flash && flash?.success) {
             toast.success(flash.success);
@@ -64,21 +63,21 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
         });
     };
 
-    const handleDelete = (guardian: Guardian) => {
+    const handleDelete = (item: Contact) => {
         MySwalTheme.fire({
             title: "Are you sure?",
-            html: `This <b>"${guardian.name}"</b> will be permanently deleted.<br/><small class="text-danger">This action cannot be undone.</small>`,
+            html: `This school <b>"${item.name}"</b> will be permanently deleted.<br/><small class="text-danger">This action cannot be undone.</small>`,
             icon: "question",
             confirmButtonText: "Delete",
             showCancelButton: true,
         }).then((val) => {
             if (val.isConfirmed) {
-                return router.delete(route('master.guardians.destroy', guardian.id));
+                return router.delete(route('contacts.destroy', item.id));
             }
         });
     }
 
-    const columnHelper = createColumnHelper<Guardian>();
+    const columnHelper = createColumnHelper<Contact>();
 
     const columns = [
         columnHelper.display({
@@ -90,43 +89,39 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
                         <PiDotsThreeOutlineDuotone />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => router.visit(route('master.guardians.edit', info.row.original.id))} role="button">Edit</Dropdown.Item>
+                        <Dropdown.Item onClick={() => router.visit(route('contacts.edit', info.row.original.id))} role="button">Edit</Dropdown.Item>
                         <Dropdown.Item onClick={() => handleDelete(info.row.original)}>Delete</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             ),
             header: 'Actions'
         }),
-        columnHelper.accessor('name', {
-            cell: info => <div className="text-start">{info.getValue()}</div>,
-            header: () => <div className="text-start">Nama Wali Murid</div>
-        }),
-        columnHelper.accessor('email', {
-            cell: info => <div className="text-start">{info.getValue()}</div>,
-            header: () => <div className="text-start">Email</div>
-        }),
         columnHelper.accessor('phone_number', {
             cell: info => <div className="text-start">{info.getValue()}</div>,
-            header: () => <div className="text-start">Nomor Telepon</div>
+            header: () => <div className="text-start">Phone Number</div>
         }),
-        columnHelper.accessor('children', {
-            header: 'Anak',
-            cell: info => {
-                const children = info.getValue();
-                if (!children || children.length === 0) {
-                    return <Badge bg="secondary" className="fw-normal">Belum Terhubung</Badge>;
-                }
-                return (
-                    <div>
-                        {children.map(child => (
-                            <Badge key={child.id} bg="info" className="me-1 mb-1 fw-normal">
-                                {child.name}
-                            </Badge>
-                        ))}
-                    </div>
-                );
-            },
+        columnHelper.accessor('name', {
+            cell: info => <div className="text-start">{info.getValue()}</div>,
+            header: () => <div className="text-start">Name</div>
+        }),
+        columnHelper.accessor('status_id', {
+            cell: info => <div className="text-start">{info.row.original.status.name}</div>,
+            header: () => <div className="text-start">Status</div>
+        }),
+        columnHelper.accessor('avatar', {
+            cell: info => (
+                <Image
+                    src={info.row.original.avatar_url}
+                    style={{ height: 50 }}
+                    className="object-fit rounded-3"
+                />
+            ),
+            header: () => <div className="text-start">Avatar</div>,
             enableSorting: false,
+        }),
+        columnHelper.accessor('created_at', {
+            cell: info => <div className="text-start small text-muted">{info.getValue()}</div>,
+            header: () => <div className="text-start">Date Created</div>
         }),
     ];
 
@@ -160,10 +155,10 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
                                 <PiSpeedometerDuotone className="mb-0 fs-5 text-primary" />
                             </div>
                         ),
-                        url: '/dashboard',
+                        url: route('dashboard'),
                     },
                     {
-                        title: 'Master',
+                        title: 'Features',
                         active: true,
                     },
                     {
@@ -173,40 +168,42 @@ export default function IndexPage({ metaOptions, responseData }: Props) {
                 ]}
             />
 
-            <div className="mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
-                <div className="d-flex flex-wrap align-items-center gap-2">
-                    <div className="app-input-group">
-                        <div className="app-input-group-icon">
-                            <PiMagnifyingGlassDuotone />
+            <Container className="p-0">
+                <div className="mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <div className="d-flex flex-wrap align-items-center gap-2">
+                        <div className="app-input-group">
+                            <div className="app-input-group-icon">
+                                <PiMagnifyingGlassDuotone />
+                            </div>
+                            <Form.Control
+                                type="search"
+                                name="search"
+                                value={searchValue}
+                                onChange={handleSearch}
+                                placeholder="Search..."
+                            />
                         </div>
-                        <Form.Control
-                            type="search"
-                            name="search"
-                            value={searchValue}
-                            onChange={handleSearch}
-                            placeholder="Search..."
-                        />
+                    </div>
+                    <div>
+                        <Button variant="primary" onClick={() => router.visit(route('contacts.create'))}>Tambah</Button>
                     </div>
                 </div>
-                <div>
-                    <Button variant="primary" onClick={() => router.visit(route('master.guardians.create'))}>Tambah</Button>
-                </div>
-            </div>
 
-            <DataTable
-                table={table}
-                params={params}
-                onSort={handleSort}
-                defaultSortColumn="code"
-            />
+                <DataTable
+                    table={table}
+                    params={params}
+                    onSort={handleSort}
+                    defaultSortColumn="created_at"
+                />
 
-            {responseData.meta.total === 0 && <EmptyData />}
+                {responseData.meta.total === 0 && <EmptyData />}
 
-            <AppPagination
-                meta={responseData.meta}
-                onPageChange={handlePageChange}
-                onPerPageChange={handlePerPageChange}
-            />
+                <AppPagination
+                    meta={responseData.meta}
+                    onPageChange={handlePageChange}
+                    onPerPageChange={handlePerPageChange}
+                />
+            </Container>
         </AppLayout>
     )
 }
