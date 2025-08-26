@@ -56,7 +56,10 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $resource = Contact::findOrFail($id);
+
+        ContactResource::withoutWrapping();
+        return new ContactResource($resource);
     }
 
     /**
