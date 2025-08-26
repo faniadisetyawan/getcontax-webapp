@@ -35,7 +35,7 @@ export default function AppHeader({ setIsSidebarMobileOpen }: AppHeaderProps) {
                         <Form.Control
                             type="search"
                             name="q"
-                            placeholder="NISN..."
+                            placeholder="Phone number..."
                             className="border-0"
                         />
                     </div>
@@ -46,7 +46,7 @@ export default function AppHeader({ setIsSidebarMobileOpen }: AppHeaderProps) {
                         })}
                     >
                         <PiDotDuotone className="fs-3" />
-                        <span>Tambah Siswa</span>
+                        <span>Add contact</span>
                     </Link>
                 </div>
             </Fragment>

@@ -4,17 +4,12 @@ import { Collapse, Nav } from "react-bootstrap";
 import {
     PiBowlFoodDuotone,
     PiBriefcaseDuotone,
-    PiChartLineUpDuotone,
     PiClockCounterClockwiseDuotone,
-    PiFarmDuotone,
-    PiHandCoinsDuotone,
-    PiIdentificationBadgeDuotone,
     PiMoneyDuotone,
     PiNotebookDuotone,
-    PiPersonArmsSpreadDuotone,
     PiPersonDuotone,
+    PiPhoneDuotone,
     PiSpeedometerDuotone,
-    PiStudent,
     PiStudentDuotone,
     PiToggleLeftDuotone,
     PiToggleRightDuotone,
@@ -24,7 +19,6 @@ import { RxChevronRight } from "react-icons/rx";
 import classNames from "classnames";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AppLogo from "@/components/app-logo";
-
 
 interface NavItem {
     label: string;
@@ -49,77 +43,18 @@ const items: NavItem[] = [
         isHeading: true,
     },
     {
-        label: 'Sekolah',
-        url: '/master/schools',
+        label: 'Statuses',
+        url: '/statuses',
         icon: <PiBriefcaseDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Kelas',
-        url: '/master/classes',
-        icon: <PiNotebookDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Wali Murid',
-        url: '/master/guardians',
-        icon: <PiPersonDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Siswa',
-        url: '/master/students',
-        icon: <PiStudentDuotone className="nav-icon" />,
-        children: [
-            {
-                label: 'Daftar Siswa',
-                url: '/master/students',
-            },
-            {
-                label: 'Impor Data Siswa',
-                url: '/master/students/import',
-            },
-        ],
     },
     {
         label: 'Features',
         isHeading: true,
     },
     {
-        label: 'Riwayat Absensi',
-        url: '/attendances',
-        icon: <PiClockCounterClockwiseDuotone className="nav-icon" />,
-    },
-    {
-        label: 'Kantin',
-        url: '/canteens',
-        icon: <PiBowlFoodDuotone className="nav-icon" />,
-        children: [
-            {
-                label: 'Inventory',
-                url: '/canteens/inventory',
-            },
-            {
-                label: 'Point of Sales',
-                url: '/canteens/pos',
-            },
-            {
-                label: 'Print Label Barcode',
-                url: '/canteens/label/print',
-            },
-            {
-                label: 'Keuangan Kantin',
-                url: '/finance/canteen',
-            },
-        ],
-    },
-    {
-        label: 'Keuangan',
-        url: '/finance',
-        icon: <PiMoneyDuotone className="nav-icon" />,
-        children: [
-            {
-                label: 'Keuangan Kantin',
-                url: '/finance/canteen',
-            },
-        ],
+        label: 'List of Contacts',
+        url: '/contacts',
+        icon: <PiPhoneDuotone className="nav-icon" />,
     },
 ];
 

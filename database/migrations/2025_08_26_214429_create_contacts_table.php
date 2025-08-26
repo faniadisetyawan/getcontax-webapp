@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('canteen_withdrawals', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('school_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 15, 2);
-            $table->date('withdrawal_date');
-            $table->text('notes')->nullable();
+            $table->string('phone_number', 15)->unique();
+            $table->string('name', 50);
+            $table->string('avatar')->nullable();
+            $table->foreignId('status_id')->constrained(table: 'statuses');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('canteen_withdrawals');
+        Schema::dropIfExists('contacts');
     }
 };

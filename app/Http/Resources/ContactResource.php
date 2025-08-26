@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SchoolClassResource extends JsonResource
+class ContactResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,14 @@ class SchoolClassResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'phone_number' => $this->phone_number,
             'name' => $this->name,
-            'level' => $this->level,
-            'students_count' => $this->when(isset($this->students_count), $this->students_count),
-            'homeroom_teacher' => $this->whenLoaded('homeroomTeacher'),
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
+            'avatar' => $this->avatar,
+            'avatar_url' => $this->avatarUrl,
+            'status_id' => $this->status_id,
+            'status' => new StatusResource($this->status),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
